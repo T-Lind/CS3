@@ -26,6 +26,8 @@ class Trainer:
         return self.reindeer_assigned[name]
 
     def __str__(self):
-        print(f"{self.name}'s reindeer:\n-----------------")
+        ret = f"{self.name}'s reindeer:\n-----------------\n"
         for key in self.reindeer_assigned:
-            print(key)
+            ret += key
+
+        return ret

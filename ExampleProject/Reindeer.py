@@ -11,4 +11,5 @@ class Reindeer:
         self.clean = False
         self.trimmed = False
 
-
+    def __str__(self):
+        return f"{self.name} is clean: {self.clean} and is trimmed: {self.trimmed}"
