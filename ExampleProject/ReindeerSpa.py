@@ -67,7 +67,7 @@ Welcome to the Reindeer Spa. Please use one of the following options:
     4. Clean a reindeer
     5. Groom a reindeer
     6. Check out a reindeer
-    7. Check out a trainer
+    7. Remove a trainer from the system
     8. Print the each reindeer checked in and their status
     9. Leave the spa \n
     User input {i}: 
@@ -111,11 +111,30 @@ Welcome to the Reindeer Spa. Please use one of the following options:
 
         else:
             logger.warning(f"Tried to input an invalid trainer- {trainer_to_remove} to remove from spa")
-        # TODO: Remove reindeer who belong to this trainer
+
+        reindeer_del = [key for key in reindeer_in_spa if key.trainer_name == trainer_to_remove]
+
+        for key in reindeer_del:
+            del reindeer_in_spa[key]
 
     elif user_input == 6:
-        continue
-        # TODO: Remove reindeer specified
+        if print_reindeer() is False:
+            continue
+
+        reindeer_name = input("Choose a reindeer to check out of the spa:")
+
+        # Check and see if the reindeer is actually in the list of reindeer, if not, print a warning and continue
+        # Also save the key to remove later, can't pop while iterating
+        save_key = None
+        for key in reindeer_in_spa.keys():
+            if reindeer_in_spa[key].name == reindeer_name:
+                save_key = key
+
+        if save_key is None:
+            logger.warning(f"Tried to check out an invalid reindeer - {reindeer_name}. This reindeer is not in the spa")
+            continue
+
+        reindeer_in_spa.pop(save_key)
 
     elif user_input == 5:
         # Trim a reindeer
@@ -142,17 +161,17 @@ Welcome to the Reindeer Spa. Please use one of the following options:
         if print_reindeer() is False:
             continue
 
-        trim = input("Choose a reindeer to clean:")
+        clean = input("Choose a reindeer to clean:")
 
         # Check and see if the reindeer is actually in the list of reindeer, if not, print a warning and continue
         reindeer_match = False
         for key in reindeer_in_spa.keys():
-            if reindeer_in_spa[key].name == trim:
-                reindeer_in_spa[key].trim = True
+            if reindeer_in_spa[key].name == clean:
+                reindeer_in_spa[key].clean = True
                 reindeer_match = True
 
         if not reindeer_match:
-            logger.warning(f"Tried to clean an invalid reindeer - {trim} to clean. This reindeer is not in the spa")
+            logger.warning(f"Tried to clean an invalid reindeer - {clean} to clean. This reindeer is not in the spa")
             continue
 
 

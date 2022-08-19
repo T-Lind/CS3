@@ -1,2 +1,8 @@
 2022-08-19 16:42:11,282 - __main__ - WARNING - Tried to clean an invalid reindeer - Jo to clean. This reindeer is not in the spa
 2022-08-19 16:43:28,537 - __main__ - WARNING - ex
+2022-08-19 16:45:33,953 - __main__ - ERROR - ValueError in ReindeerSpa - input Jo! Cannot include non-ints or out of range inputs
+2022-08-19 16:46:09,336 - __main__ - ERROR - ValueError in ReindeerSpa - input ! Cannot include non-ints or out of range inputs
+2022-08-19 16:47:31,032 - __main__ - ERROR - ValueError in ReindeerSpa - input Jo! Cannot include non-ints or out of range inputs
+2022-08-19 16:51:15,935 - __main__ - ERROR - ValueError in ReindeerSpa - input Jo! Cannot include non-ints or out of range inputs
+2022-08-19 16:56:30,063 - __main__ - ERROR - ValueError in ReindeerSpa - input Jo! Cannot include non-ints or out of range inputs
+2022-08-19 17:02:58,602 - __main__ - WARNING - Tried to check out an invalid reindeer - . This reindeer is not in the spa

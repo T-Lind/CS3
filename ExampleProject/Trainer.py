@@ -28,6 +28,6 @@ class Trainer:
     def __str__(self):
         ret = f"{self.name}'s reindeer:\n-----------------\n"
         for key in self.reindeer_assigned:
-            ret += key
+            ret += key+"\n"
 
         return ret
