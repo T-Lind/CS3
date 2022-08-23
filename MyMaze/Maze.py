@@ -37,6 +37,7 @@ class Maze:
         Print the maze, given an input maze
         :param maze: the input maze
         """
+        print()
         for i in range(0, self.height):
             for j in range(0, self.width):
                 if self.maze[i][j] == self.unvisited:
@@ -93,19 +94,27 @@ class Maze:
 
     def move_up(self):
         if self.get_maze_options()[1] is True:
+            self.maze[self.player.r][self.player.c] = 'c'
             self.player.r -= 1
+            self.set_trodden()
 
     def move_down(self):
         if self.get_maze_options()[3] is True:
+            self.maze[self.player.r][self.player.c] = 'c'
             self.player.r += 1
+            self.set_trodden()
 
     def move_left(self):
         if self.get_maze_options()[2] is True:
+            self.maze[self.player.r][self.player.c] = 'c'
             self.player.c -= 1
+            self.set_trodden()
 
     def move_right(self):
         if self.get_maze_options()[0] is True:
+            self.maze[self.player.r][self.player.c] = 'c'
             self.player.c += 1
+            self.set_trodden()
 
     def set_trodden(self):
         self.maze[self.player.r][self.player.c] = self.trodden
@@ -317,7 +326,7 @@ class Maze:
 
         for i in range(self.width - 1, 0, -1):
             if self.maze[self.height - 2][i] == self.cell:
-                self.maze[self.height - 1][i] = self.cell
+                self.maze[self.height - 1][i] = self.trodden
                 self.player.r = self.height - 1
                 self.player.c = i
                 break
