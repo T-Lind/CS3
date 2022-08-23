@@ -24,3 +24,10 @@ class Trainer:
             raise TypeError("You must specify a name to get a reindeer")
 
         return self.reindeer_assigned[name]
+
+    def __str__(self):
+        ret = f"{self.name}'s reindeer:\n-----------------\n"
+        for key in self.reindeer_assigned:
+            ret += key+"\n"
+
+        return ret

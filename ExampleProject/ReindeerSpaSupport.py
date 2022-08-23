@@ -1,7 +1,7 @@
 import functools
 import logging
 
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+logging.basicConfig(level=logging.WARNING, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                     datefmt='%m/%d%Y %H: %M: %S')
 
 
@@ -47,6 +47,7 @@ class CountCalls:  # Documentation example below using multi line strings
         """
         self.func = func
         self.num_calls = 0
+        self.__name__ = "CountCalls"
 
     def __call__(self, *args, **kwargs):
         """
