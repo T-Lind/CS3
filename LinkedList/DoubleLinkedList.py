@@ -148,7 +148,7 @@ class DoubleLinkedList:
         prev_item = get_item.prev_pointer
         next_item = get_item.next_pointer
 
-        if prev_item is None:re
+        if prev_item is None:
             next_item.prev_pointer = None
             get_item.next_pointer = None
             get_item.prev_pointer = None
