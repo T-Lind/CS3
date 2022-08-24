@@ -21,7 +21,7 @@ class Maze:
         self.wall = '█'
         self.cell = ' '
         self.unvisited = 'u'
-        self.end = '⚫'
+        self.end = '▢'
         self.trodden = '△'
 
         self.player = Player(-1, -1)
