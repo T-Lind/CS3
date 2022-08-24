@@ -43,10 +43,10 @@ class Maze:
             for j in range(0, self.width):
                 if self.maze[i][j] == self.wall:
                     print(Fore.GREEN + str(self.maze[i][j]), end=" ")
-                elif self.maze[i][j] == self.trodden:
-                    print(Fore.BLUE + str(self.maze[i][j]), end=" ")
-                else:
+                elif self.maze[i][j] == self.end:
                     print(Fore.RED + str(self.maze[i][j]), end=" ")
+                else:
+                    print(Fore.BLUE + str(self.maze[i][j]), end=" ")
 
             print()
         print('\n\n')
@@ -77,9 +77,9 @@ class Maze:
         if r >= len(self.maze) or c >= len(self.maze[0]):
             return False
 
-        if self.maze[r][c] == self.cell or self.end:
-            return True
-        return False
+        if self.maze[r][c] == self.wall:
+            return False
+        return True
 
     def get_maze_options(self):
         # Stores right, above, left, below order
