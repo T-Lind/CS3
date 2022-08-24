@@ -18,10 +18,11 @@ class Maze:
         self.width = width
 
         self.maze = []
-        self.wall = 'w'
-        self.cell = 'c'
+        self.wall = '█'
+        self.cell = ' '
         self.unvisited = 'u'
-        self.trodden = 't'
+        self.end = '⚫'
+        self.trodden = '△'
 
         self.player = Player(-1, -1)
 
@@ -40,9 +41,7 @@ class Maze:
         print()
         for i in range(0, self.height):
             for j in range(0, self.width):
-                if self.maze[i][j] == self.unvisited:
-                    print(Fore.WHITE + str(self.maze[i][j]), end=" ")
-                elif self.maze[i][j] == self.cell:
+                if self.maze[i][j] == self.wall:
                     print(Fore.GREEN + str(self.maze[i][j]), end=" ")
                 elif self.maze[i][j] == self.trodden:
                     print(Fore.BLUE + str(self.maze[i][j]), end=" ")
@@ -78,7 +77,7 @@ class Maze:
         if r >= len(self.maze) or c >= len(self.maze[0]):
             return False
 
-        if self.maze[r][c] == self.cell:
+        if self.maze[r][c] == self.cell or self.end:
             return True
         return False
 
@@ -94,25 +93,29 @@ class Maze:
 
     def move_up(self):
         if self.get_maze_options()[1] is True:
-            self.maze[self.player.r][self.player.c] = 'c'
+            self.trodden = '△'
+            self.maze[self.player.r][self.player.c] = self.cell
             self.player.r -= 1
             self.set_trodden()
 
     def move_down(self):
         if self.get_maze_options()[3] is True:
-            self.maze[self.player.r][self.player.c] = 'c'
+            self.trodden = '▽'
+            self.maze[self.player.r][self.player.c] = self.cell
             self.player.r += 1
             self.set_trodden()
 
     def move_left(self):
         if self.get_maze_options()[2] is True:
-            self.maze[self.player.r][self.player.c] = 'c'
+            self.trodden = '◁'
+            self.maze[self.player.r][self.player.c] = self.cell
             self.player.c -= 1
             self.set_trodden()
 
     def move_right(self):
+        self.trodden = '▷'
         if self.get_maze_options()[0] is True:
-            self.maze[self.player.r][self.player.c] = 'c'
+            self.maze[self.player.r][self.player.c] = self.cell
             self.player.c += 1
             self.set_trodden()
 
@@ -319,7 +322,7 @@ class Maze:
         # Set entrance and exit
         for i in range(0, self.width):
             if self.maze[1][i] == self.cell:
-                self.maze[0][i] = self.cell
+                self.maze[0][i] = self.end
                 self.end_r = 0
                 self.end_c = i
                 break
@@ -330,6 +333,7 @@ class Maze:
                 self.player.r = self.height - 1
                 self.player.c = i
                 break
+
 
         # Print final maze
         self.printMaze()

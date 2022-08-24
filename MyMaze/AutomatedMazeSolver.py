@@ -1,6 +1,6 @@
 from Maze import Maze
 
-my_maze = Maze(7, 14)
+my_maze = Maze(5, 5)
 my_maze.create_maze()
 
 while True:
@@ -24,5 +24,5 @@ while True:
     elif char_input == 's':
         my_maze.move_down()
 
-    elif char_input == 'q':
+    else:
         break
