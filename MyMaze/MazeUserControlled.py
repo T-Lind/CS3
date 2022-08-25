@@ -1,10 +1,10 @@
 from Maze import Maze
 
-my_maze = Maze(7, 14)
+my_maze = Maze(20, 40)
 my_maze.create_maze()
 
 while True:
-    my_maze.printMaze()
+    my_maze.print_maze()
 
     if my_maze.is_maze_complete():
         print("Congratulations! You beat the maze!")
