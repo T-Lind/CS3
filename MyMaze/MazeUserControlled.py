@@ -26,3 +26,6 @@ while True:
 
     elif char_input == 'q':
         break
+
+    else:
+        print("Invalid character. Use 'q' to exit.")

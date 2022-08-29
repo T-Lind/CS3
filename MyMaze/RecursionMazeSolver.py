@@ -18,6 +18,9 @@ def solve_maze(maze: Maze):
     if maze_copy.player.r is my_maze.end_r and maze_copy.player.c is my_maze.end_c:
         return maze_copy
 
+    if maze_copy.count_options() <= 1 and solve_steps > 1:
+        return
+
     states = maze_copy.get_maze_options()
     print(states)
 

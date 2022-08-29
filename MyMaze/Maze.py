@@ -10,12 +10,15 @@ Coordinate = namedtuple("Coordinate", "r,c")
 
 
 class Maze:
+    N_INPUTS = 4
+
     def __init__(self, height, width):
         """
         Create a maze given a height and width of the maze
         :param height: The height of the maze in rows
         :param width: The width of the row in columns
         """
+
         self.height = height
         self.width = width
 
@@ -95,11 +98,18 @@ class Maze:
 
         return option_states
 
+    def count_options(self):
+        cnt = 0
+        options = self.get_maze_options()
+        for option in options:
+            if option:
+                cnt += 1
+        return cnt
+
     def move_up(self):
         if self.get_maze_options()[1] is True:
-            self.maze[self.player.r][self.player.c] = 't'
             self.trodden = '△'
-            # self.maze[self.player.r][self.player.c] = self.cell
+            self.maze[self.player.r][self.player.c] = self.cell
             self.player.r -= 1
             self.set_trodden()
 
@@ -107,25 +117,39 @@ class Maze:
         if self.get_maze_options()[3] is True:
             self.maze[self.player.r][self.player.c] = 't'
             self.trodden = '▽'
-            # self.maze[self.player.r][self.player.c] = self.cell
+            self.maze[self.player.r][self.player.c] = self.cell
             self.player.r += 1
             self.set_trodden()
 
     def move_left(self):
         if self.get_maze_options()[2] is True:
-            self.maze[self.player.r][self.player.c] = 't'
             self.trodden = '◁'
-            # self.maze[self.player.r][self.player.c] = self.cell
+            self.maze[self.player.r][self.player.c] = self.cell
             self.player.c -= 1
             self.set_trodden()
 
     def move_right(self):
         if self.get_maze_options()[0] is True:
-            self.maze[self.player.r][self.player.c] = 't'
             self.trodden = '▷'
-            # self.maze[self.player.r][self.player.c] = self.cell
+            self.maze[self.player.r][self.player.c] = self.cell
             self.player.c += 1
             self.set_trodden()
+
+    def take_action(self, num):
+        if num == 0:
+            self.move_right()
+
+        elif num == 1:
+            self.move_up()
+
+        elif num == 2:
+            self.move_left()
+
+        elif num == 3:
+            self.move_down()
+
+        else:
+            raise IndexError("Tried to move in a direction not specified!")
 
     def set_trodden(self):
         self.maze[self.player.r][self.player.c] = self.trodden
@@ -171,7 +195,8 @@ class Maze:
 
             # Check if it is a left wall
             if rand_wall[1] != 0:
-                if self.maze[rand_wall[0]][rand_wall[1] - 1] == self.unvisited and self.maze[rand_wall[0]][rand_wall[1] + 1] == self.cell:
+                if self.maze[rand_wall[0]][rand_wall[1] - 1] == self.unvisited and self.maze[rand_wall[0]][
+                    rand_wall[1] + 1] == self.cell:
                     # Find the number of surrounding cells
                     s_cells = self.create_surround_cells(rand_wall)
 
@@ -210,7 +235,8 @@ class Maze:
 
             # Check if it is an upper wall
             if rand_wall[0] != 0:
-                if self.maze[rand_wall[0] - 1][rand_wall[1]] == self.unvisited and self.maze[rand_wall[0] + 1][rand_wall[1]] == self.cell:
+                if self.maze[rand_wall[0] - 1][rand_wall[1]] == self.unvisited and self.maze[rand_wall[0] + 1][
+                    rand_wall[1]] == self.cell:
 
                     s_cells = self.create_surround_cells(rand_wall)
                     if s_cells < 2:
@@ -282,7 +308,8 @@ class Maze:
 
             # Check the right wall
             if rand_wall[1] != self.width - 1:
-                if self.maze[rand_wall[0]][rand_wall[1] + 1] == self.unvisited and self.maze[rand_wall[0]][rand_wall[1] - 1] == self.cell:
+                if self.maze[rand_wall[0]][rand_wall[1] + 1] == self.unvisited and self.maze[rand_wall[0]][
+                    rand_wall[1] - 1] == self.cell:
 
                     s_cells = self.create_surround_cells(rand_wall)
                     if s_cells < 2:
@@ -338,6 +365,3 @@ class Maze:
                 self.player.r = self.height - 1
                 self.player.c = i
                 break
-
-        # Print final maze
-        self.print_maze()
