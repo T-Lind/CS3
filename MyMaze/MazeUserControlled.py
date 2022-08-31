@@ -1,6 +1,6 @@
 from Maze import Maze
 
-my_maze = Maze(20, 40)
+my_maze = Maze(10, 20)
 my_maze.create_maze()
 
 while True:

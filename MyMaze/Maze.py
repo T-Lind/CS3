@@ -1,3 +1,4 @@
+import math
 import random
 from collections import namedtuple
 
@@ -150,6 +151,11 @@ class Maze:
 
         else:
             raise IndexError("Tried to move in a direction not specified!")
+
+        reward_recip = math.hypot(self.player.c-self.end_c, self.player.r-self.end_r)
+        if reward_recip != 0:
+            return 1/reward_recip
+        return 1
 
     def set_trodden(self):
         self.maze[self.player.r][self.player.c] = self.trodden
