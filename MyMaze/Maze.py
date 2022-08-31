@@ -153,11 +153,13 @@ class Maze:
         else:
             raise IndexError("Tried to move in a direction not specified!")
 
-        reward_recip = math.hypot(self.player.c-self.end_c, self.player.r-self.end_r)
+        reward_recip = math.hypot((self.player.c-self.end_c)+1, (self.player.r-self.end_r)+1)
         if reward_recip != 0:
             reward = 1/reward_recip
+            reward -= self.last_reward
             self.last_reward = reward
-            return reward-self.last_reward
+            return reward
+        self.last_reward = 0
         return 1
 
     def set_trodden(self):
