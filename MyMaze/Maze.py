@@ -31,6 +31,7 @@ class Maze:
         self.unvisited = 'u'
         self.end = '▢'
         self.trodden = '△'
+        self.last_reward = 0
 
         self.player = Player(-1, -1)
 
@@ -154,7 +155,9 @@ class Maze:
 
         reward_recip = math.hypot(self.player.c-self.end_c, self.player.r-self.end_r)
         if reward_recip != 0:
-            return 1/reward_recip
+            reward = 1/reward_recip
+            self.last_reward = reward
+            return reward-self.last_reward
         return 1
 
     def set_trodden(self):
