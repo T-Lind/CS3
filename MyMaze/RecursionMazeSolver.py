@@ -8,7 +8,6 @@ solve_steps = 0
 
 def solve_maze(maze: Maze):
     global solve_steps
-    solve_steps += 1
 
     maze_copy = copy.deepcopy(maze)
 
@@ -23,6 +22,9 @@ def solve_maze(maze: Maze):
 
     states = maze_copy.get_maze_options()
     print(states)
+
+    if solve_steps > 1 and maze_copy.in_dead_end() is not False:
+
 
     for i in range(len(states)):
         if states[i] is False:
@@ -42,6 +44,8 @@ def solve_maze(maze: Maze):
             solve_maze(maze_copy)
         else:
             raise IndexError(f"Improper index applied to the states object! in {__name__}")
+
+    solve_steps += 1
 
 
 solution = solve_maze(my_maze)
