@@ -8,6 +8,10 @@ def _or(a, b):
     return a | b
 
 
+def _not(a):
+    return not a
+
+
 def _nor(a, b):
     return not _or(a, b)
 
@@ -59,7 +63,8 @@ def _8_bit_adder_basic(a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0,
 
 def _ones_complement(a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0, invert):
     return _xor(invert, a_7), _xor(invert, a_6), _xor(invert, a_5), _xor(invert, a_4), _xor(invert, a_3), _xor(invert,
-            a_2), _xor(invert, a_1), _xor(invert, a_0)
+                                                                                                               a_2), _xor(
+        invert, a_1), _xor(invert, a_0)
 
 
 def _8_bit_adder(a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0,
@@ -74,3 +79,37 @@ def _8_bit_adder(a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0,
     overflow_underflow = _xor(subtract, carry_out)
 
     return r_7, r_6, r_5, r_4, r_3, r_2, r_1, r_0, overflow_underflow
+
+
+class _r_s_flip_flop:
+    def __init__(self):
+        self.q = False
+        self.q_bar = False
+
+    def __call__(self, r, s):
+        q_bar = self.q_bar
+        q = self.q
+        self.q = _nor(r, q_bar)
+        self.q_bar = _nor(s, q)
+
+        return self.q, self.q_bar
+
+
+class _d_type_flip_flop:
+    def __init__(self):
+        self.flip_flop = _r_s_flip_flop()
+
+    def __call__(self, clk, data):
+        return self.flip_flop(_and(_not(data), clk), _and(data, clk))
+
+class _8_bit_latch:
+    def __init__(self):
+        self.latch_0 = _d_type_flip_flop()
+        self.latch_1 = _d_type_flip_flop()
+        self.latch_2 = _d_type_flip_flop()
+        self.latch_3 = _d_type_flip_flop()
+        self.latch_4 = _d_type_flip_flop()
+        self.latch_5 = _d_type_flip_flop()
+        self.latch_6 = _d_type_flip_flop()
+        self.latch_7 = _d_type_flip_flop()
+
