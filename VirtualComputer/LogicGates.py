@@ -215,3 +215,45 @@ def _8_to_1_line_selector(s_0, s_1, s_2,
     and_7 = _quad_and(d_7, s_0, s_1, s_2)
 
     return _eight_or(and_0, and_1, and_2, and_3, and_4, and_5, and_6, and_7)
+
+
+def _3_to_8_decoder(s_0, s_1, s_2, data_in):
+    inv_s_0 = _not(s_0)
+    inv_s_1 = _not(s_1)
+    inv_s_2 = _not(s_2)
+
+    o_0 = _quad_and(data_in, inv_s_0, inv_s_1, inv_s_2)
+    o_1 = _quad_and(data_in, s_0, inv_s_1, inv_s_2)
+    o_2 = _quad_and(data_in, inv_s_0, s_1, inv_s_2)
+    o_3 = _quad_and(data_in, s_0, s_1, inv_s_2)
+    o_4 = _quad_and(data_in, inv_s_0, inv_s_1, s_2)
+    o_5 = _quad_and(data_in, s_0, inv_s_1, s_2)
+    o_6 = _quad_and(data_in, inv_s_0, s_1, s_2)
+    o_7 = _quad_and(data_in, s_0, s_1, s_2)
+
+    return o_7, o_6, o_5, o_4, o_3, o_2, o_1, o_0
+
+class _8x1_ram:
+    def __init__(self):
+        self.bit_0 = _d_type_flip_flop()
+        self.bit_1 = _d_type_flip_flop()
+        self.bit_2 = _d_type_flip_flop()
+        self.bit_3 = _d_type_flip_flop()
+        self.bit_4 = _d_type_flip_flop()
+        self.bit_5 = _d_type_flip_flop()
+        self.bit_6 = _d_type_flip_flop()
+        self.bit_7 = _d_type_flip_flop()
+
+    def __call__(self, s_0, s_1, s_2, write, data_in):
+        w_0, w_1, w_2, w_3, w_4, w_5, w_6, w_7 = _3_to_8_decoder(s_0, s_1, s_2, write)
+
+        d_0 = self.bit_0(w_0, data_in)[0]
+        d_1 = self.bit_1(w_1, data_in)[0]
+        d_2 = self.bit_2(w_2, data_in)[0]
+        d_3 = self.bit_3(w_3, data_in)[0]
+        d_4 = self.bit_4(w_4, data_in)[0]
+        d_5 = self.bit_5(w_5, data_in)[0]
+        d_6 = self.bit_6(w_6, data_in)[0]
+        d_7 = self.bit_7(w_7, data_in)[0]
+
+        return _8_to_1_line_selector(s_0, s_1, s_2, d_0, d_1, d_2, d_3, d_4, d_5, d_6, d_7)
