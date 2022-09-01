@@ -31,7 +31,7 @@ class Maze:
         self.unvisited = 'u'
         self.end = '▢'
         self.trodden = '△'
-        self.last_reward = 0
+        self.position_history = []
 
         self.player = Player(-1, -1)
 
@@ -140,6 +140,7 @@ class Maze:
     def take_action(self, num):
         if num == 0:
             self.move_right()
+            self.position_history.append(self.player.pos())
 
         elif num == 1:
             self.move_up()
@@ -153,14 +154,16 @@ class Maze:
         else:
             raise IndexError("Tried to move in a direction not specified!")
 
-        reward_recip = math.hypot((self.player.c-self.end_c)+1, (self.player.r-self.end_r)+1)
-        if reward_recip != 0:
-            reward = 1/reward_recip
-            reward -= self.last_reward
-            self.last_reward = reward
-            return reward
-        self.last_reward = 0
-        return 1
+
+
+        # reward_recip = math.hypot((self.player.c-self.end_c)+1, (self.player.r-self.end_r)+1)
+        # if reward_recip != 0:
+        #     reward = 1/reward_recip
+        #     reward -= self.last_reward
+        #     self.last_reward = reward
+        #     return reward
+        # self.last_reward = 0
+        # return 1
 
     def set_trodden(self):
         self.maze[self.player.r][self.player.c] = self.trodden
