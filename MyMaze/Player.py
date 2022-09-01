@@ -4,4 +4,5 @@ class Player:
         self.c = c
 
     def pos(self):
-        return tuple([self.r, self.c])
+        pos: tuple = (self.r, self.c)
+        return pos

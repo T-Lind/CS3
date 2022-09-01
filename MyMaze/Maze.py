@@ -24,7 +24,6 @@ class Maze:
         self.width = width
 
         self.maze = []
-        self.dead_ends = []
 
         self.wall = '█'
         self.cell = ' '
@@ -154,7 +153,11 @@ class Maze:
         else:
             raise IndexError("Tried to move in a direction not specified!")
 
-
+        if self.player.pos() in self.position_history[-5:]:
+            return
+        if self.player.pos() != (self.end_r, self.end_c):
+            return 0.5
+        return 1
 
         # reward_recip = math.hypot((self.player.c-self.end_c)+1, (self.player.r-self.end_r)+1)
         # if reward_recip != 0:
