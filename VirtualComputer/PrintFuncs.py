@@ -1,3 +1,7 @@
+def cvt_int(*int_list):
+    return (bool(val) for val in int_list)
+
+
 def print_byte_pairs(bool_list: list):
     for i in bool_list:
         if i:
@@ -21,11 +25,17 @@ def print_2_depth(bool_list: list):
 def print_3_depth(bool_list: list):
     for mem in bool_list:
         print_2_depth(mem)
-    print()
 
 
 def print_4_depth(bool_list: list):
     for mem in bool_list:
         for item in mem:
             print_2_depth(item)
+    print()
+
+
+def print_5_depth(bool_list: list):
+    for mem in bool_list:
+        for item in mem:
+            print_3_depth(item)
     print()

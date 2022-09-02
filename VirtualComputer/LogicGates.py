@@ -1,7 +1,3 @@
-def cvt_int(*int_list):
-    return (bool(val) for val in int_list)
-
-
 # Basic logic gates
 
 def _and(a, b):
