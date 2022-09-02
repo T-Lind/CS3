@@ -256,3 +256,26 @@ class _64KBx1_ram:
 
     def get_all(self):
         return self.ram2.get_all(), self.ram1.get_all()
+
+class _64KBx8:
+    def __init__(self):
+        self.ram1 = _64KBx1_ram()
+        self.ram2 = _64KBx1_ram()
+        self.ram3 = _64KBx1_ram()
+        self.ram4 = _64KBx1_ram()
+        self.ram5 = _64KBx1_ram()
+        self.ram6 = _64KBx1_ram()
+        self.ram7 = _64KBx1_ram()
+        self.ram8 = _64KBx1_ram()
+
+    def __call__(self, a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0,
+                 di_7, di_6, di_5, di_4, di_3, di_2, di_1, di_0, write):
+        ram_1_storage = self.ram1(a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0, di_0, write)
+        ram_1_storage = self.ram1(a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0, di_0, write)
+        ram_1_storage = self.ram1(a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0, di_0, write)
+        ram_1_storage = self.ram1(a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0, di_0, write)
+        ram_1_storage = self.ram1(a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0, di_0, write)
+        ram_1_storage = self.ram1(a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0, di_0, write)
+        ram_1_storage = self.ram1(a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0, di_0, write)
+        ram_1_storage = self.ram1(a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0, di_0, write)
+

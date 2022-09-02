@@ -42,13 +42,6 @@ def _half_adder(a, b):
 
 
 def _full_adder(a, b, carry_in=False):
-    """
-    A full adder implemented in python using boolean staes
-    :param a: A number to add
-    :param b: A number to add
-    :param carry_in: If a number has come in from another full adder's carry
-    :return: The sum of the two numbers and carry, and the carry out
-    """
     sum_1, carry_1 = _half_adder(a, b)
     sum_2, carry_2 = _half_adder(carry_in, sum_1)
 
@@ -326,9 +319,9 @@ class _8x8_ram:
 
     def __call__(self, s_2, s_1, s_0, di_7, di_6, di_5, di_4, di_3, di_2, di_1, di_0, write):
         ram_1_storage = self.ram1(s_2, s_1, s_0, di_0, di_1, write)
-        ram_2_storage = self.ram1(s_2, s_1, s_0, di_2, di_3, write)
-        ram_3_storage = self.ram1(s_2, s_1, s_0, di_4, di_5, write)
-        ram_4_storage = self.ram1(s_2, s_1, s_0, di_6, di_7, write)
+        ram_2_storage = self.ram2(s_2, s_1, s_0, di_2, di_3, write)
+        ram_3_storage = self.ram3(s_2, s_1, s_0, di_4, di_5, write)
+        ram_4_storage = self.ram4(s_2, s_1, s_0, di_6, di_7, write)
 
         return ram_4_storage, ram_3_storage, ram_2_storage, ram_1_storage
 
