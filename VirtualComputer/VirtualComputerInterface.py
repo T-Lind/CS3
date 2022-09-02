@@ -1,11 +1,5 @@
-from VirtualComputer.LogicGates import _edge_d_flip_flop
+from VirtualComputer.LogicGates import _8x1_ram, _one_bit_mem
 
-# print(_8_bit_adder(True, False, False, False, True, False, True, True,
-#                    False, True, False, True, False, True, False, False,
-#                    subtract=False
-#                          ))
-
-ff = _edge_d_flip_flop()
-
-print(ff(1, 0))
-print(ff.get())
+mem = _8x1_ram()
+mem(True, False, True, True, True)
+print(mem.get(False, True, True))

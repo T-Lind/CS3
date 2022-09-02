@@ -91,50 +91,40 @@ def _8_bit_adder(a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0,
     return r_7, r_6, r_5, r_4, r_3, r_2, r_1, r_0, overflow_underflow
 
 
-class _r_s_flip_flop:
+class _one_bit_mem:
     def __init__(self):
-        self.q = False
-        self.q_bar = False
-
-    def get_state(self):
-        return self.q
-
-    def __call__(self, r, s):
-        q_bar = self.q_bar
-        q = self.q
-        self.q = _nor(r, q_bar)
-        self.q_bar = _nor(s, q)
-
-        return self.q, self.q_bar
-
-
-class _d_type_flip_flop:
-    def __init__(self):
-        self.flip_flop = _r_s_flip_flop()
+        self.data_out = False
 
     def __call__(self, write, data):
-        return self.flip_flop(_and(_not(data), write), _and(data, write))
+        if not data and write:
+            self.data_out = False
+            return False
+        if data and write:
+            self.data_out = True
+            return True
+        elif not write:
+            return self.data_out
 
     def get_state(self):
-        return self.flip_flop.get_state()
+        return self.data_out
 
 
 class _8_bit_latch:
     def __init__(self):
-        self.latch_0 = _d_type_flip_flop()
-        self.latch_1 = _d_type_flip_flop()
-        self.latch_2 = _d_type_flip_flop()
-        self.latch_3 = _d_type_flip_flop()
-        self.latch_4 = _d_type_flip_flop()
-        self.latch_5 = _d_type_flip_flop()
-        self.latch_6 = _d_type_flip_flop()
-        self.latch_7 = _d_type_flip_flop()
+        self.latch_0 = _one_bit_mem()
+        self.latch_1 = _one_bit_mem()
+        self.latch_2 = _one_bit_mem()
+        self.latch_3 = _one_bit_mem()
+        self.latch_4 = _one_bit_mem()
+        self.latch_5 = _one_bit_mem()
+        self.latch_6 = _one_bit_mem()
+        self.latch_7 = _one_bit_mem()
 
     def __call__(self, d_7, d_6, d_5, d_4, d_3, d_2, d_1, d_0, write):
-        return self.latch_7(write, d_7)[0], self.latch_6(write, d_6)[0], self.latch_5(write, d_5)[0], \
-               self.latch_4(write, d_4)[0], \
-               self.latch_3(write, d_3)[0], self.latch_2(write, d_2)[0], self.latch_1(write, d_1)[0], \
-               self.latch_0(write, d_0)[0]
+        return self.latch_7(write, d_7), self.latch_6(write, d_6), self.latch_5(write, d_5), \
+               self.latch_4(write, d_4), \
+               self.latch_3(write, d_3), self.latch_2(write, d_2), self.latch_1(write, d_1), \
+               self.latch_0(write, d_0)
 
     def get_state(self):
         return self.latch_7.get_state(), self.latch_6.get_state(), self.latch_5.get_state(), self.latch_4.get_state(), \
@@ -198,7 +188,7 @@ class _edge_d_flip_flop:
         return self.q
 
 
-def _8_to_1_line_selector(s_0, s_1, s_2,
+def _8_to_1_line_selector(s_2, s_1, s_0,
                           d_0, d_1, d_2, d_3, d_4, d_5, d_6, d_7
                           ):
     inv_s_0 = _not(s_0)
@@ -217,7 +207,7 @@ def _8_to_1_line_selector(s_0, s_1, s_2,
     return _eight_or(and_0, and_1, and_2, and_3, and_4, and_5, and_6, and_7)
 
 
-def _3_to_8_decoder(s_0, s_1, s_2, data_in):
+def _3_to_8_decoder(s_2, s_1, s_0, data_in):
     inv_s_0 = _not(s_0)
     inv_s_1 = _not(s_1)
     inv_s_2 = _not(s_2)
@@ -233,27 +223,52 @@ def _3_to_8_decoder(s_0, s_1, s_2, data_in):
 
     return o_7, o_6, o_5, o_4, o_3, o_2, o_1, o_0
 
+
 class _8x1_ram:
     def __init__(self):
-        self.bit_0 = _d_type_flip_flop()
-        self.bit_1 = _d_type_flip_flop()
-        self.bit_2 = _d_type_flip_flop()
-        self.bit_3 = _d_type_flip_flop()
-        self.bit_4 = _d_type_flip_flop()
-        self.bit_5 = _d_type_flip_flop()
-        self.bit_6 = _d_type_flip_flop()
-        self.bit_7 = _d_type_flip_flop()
+        self.bit_0 = _one_bit_mem()
+        self.bit_1 = _one_bit_mem()
+        self.bit_2 = _one_bit_mem()
+        self.bit_3 = _one_bit_mem()
+        self.bit_4 = _one_bit_mem()
+        self.bit_5 = _one_bit_mem()
+        self.bit_6 = _one_bit_mem()
+        self.bit_7 = _one_bit_mem()
 
-    def __call__(self, s_0, s_1, s_2, write, data_in):
-        w_0, w_1, w_2, w_3, w_4, w_5, w_6, w_7 = _3_to_8_decoder(s_0, s_1, s_2, write)
+    def __call__(self, s_2, s_1, s_0, write, data_in):
+        w_7, w_6, w_5, w_4, w_3, w_2, w_1, w_0 = _3_to_8_decoder(s_2, s_1, s_0, write)
+        print(w_7, w_6, w_5, w_4, w_3, w_2, w_1, w_0)
 
-        d_0 = self.bit_0(w_0, data_in)[0]
-        d_1 = self.bit_1(w_1, data_in)[0]
-        d_2 = self.bit_2(w_2, data_in)[0]
-        d_3 = self.bit_3(w_3, data_in)[0]
-        d_4 = self.bit_4(w_4, data_in)[0]
-        d_5 = self.bit_5(w_5, data_in)[0]
-        d_6 = self.bit_6(w_6, data_in)[0]
-        d_7 = self.bit_7(w_7, data_in)[0]
+        d_0 = self.bit_0(w_0, data_in)
+        d_1 = self.bit_1(w_1, data_in)
+        d_2 = self.bit_2(w_2, data_in)
+        d_3 = self.bit_3(w_3, data_in)
+        d_4 = self.bit_4(w_4, data_in)
+        d_5 = self.bit_5(w_5, data_in)
+        d_6 = self.bit_6(w_6, data_in)
+        d_7 = self.bit_7(w_7, data_in)
 
-        return _8_to_1_line_selector(s_0, s_1, s_2, d_0, d_1, d_2, d_3, d_4, d_5, d_6, d_7)
+        return self.get_all()
+
+    def get(self, s_2, s_1, s_0):
+        d_0 = self.bit_0.get_state()
+        d_1 = self.bit_1.get_state()
+        d_2 = self.bit_2.get_state()
+        d_3 = self.bit_3.get_state()
+        d_4 = self.bit_4.get_state()
+        d_5 = self.bit_5.get_state()
+        d_6 = self.bit_6.get_state()
+        d_7 = self.bit_7.get_state()
+        return _8_to_1_line_selector(s_2, s_1, s_0, d_0, d_1, d_2, d_3, d_4, d_5, d_6, d_7)
+
+    def get_all(self):
+        return self.bit_7.get_state(), self.bit_6.get_state(), self.bit_5.get_state(), self.bit_4.get_state(), \
+               self.bit_3.get_state(), self.bit_2.get_state(), self.bit_1.get_state(), self.bit_0.get_state()
+
+class _8x2_ram:
+    def __init__(self):
+        self.ram1 = _8x1_ram()
+        self.ram2 = _8x1_ram()
+
+    # def __call__(self, ):
+
