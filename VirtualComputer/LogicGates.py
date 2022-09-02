@@ -101,7 +101,6 @@ class _one_bit_mem:
     def get_state(self):
         return self.data_out
 
-
 class _8_bit_latch:
     def __init__(self):
         self.latch_0 = _one_bit_mem()
@@ -136,49 +135,6 @@ class _2_to_1_line_selector:
         return self._single(a_7, b_7, select), self._single(a_6, b_6, select), self._single(a_5, b_5, select), \
                self._single(a_4, b_4, select), self._single(a_3, b_3, select), self._single(a_2, b_2, select), \
                self._single(a_1, b_1, select), self._single(a_0, b_0, select)
-
-
-class _edge_d_flip_flop:
-    def __init__(self):
-        self.q = False
-        self.q_bar = False
-
-        self.q_mid = False
-        self.q_mid_bar = False
-
-    def __call__(self, data, clk):
-        def stage_1(clock=clk):
-            clock = _not(clock)
-
-            and_1 = _and(data, clock)
-            and_2 = _and(_not(data), clock)
-
-            nor_1 = _nor(and_1, self.q_mid_bar)
-            nor_2 = _nor(and_2, self.q_mid)
-
-            self.q_mid = nor_1
-            self.q_mid_bar = nor_2
-
-        def stage_2(clock=clk):
-            and_1 = _and(self.q_mid, clock)
-            and_2 = _and(self.q_mid_bar, clock)
-
-            nor_1 = _nor(and_1, self.q_bar)
-            nor_2 = _nor(and_2, self.q)
-
-            self.q = nor_1
-            self.q_bar = nor_2
-
-        # Run the first half of the flip flop
-        stage_1()
-
-        # Run the second half of the flip flop
-        stage_2()
-
-        return self.q, self.q_bar
-
-    def get(self):
-        return self.q
 
 
 def _8_to_1_line_selector(s_2, s_1, s_0,
@@ -290,75 +246,3 @@ class _16x1_ram:
 
     def get_all(self):
         return self.ram2.get_all(), self.ram1.get_all()
-
-class _8x2_ram:
-    def __init__(self):
-        self.ram1 = _8x1_ram()
-        self.ram2 = _8x1_ram()
-
-    def __call__(self, s_2, s_1, s_0, di_1, di_0, write):
-        ram_1_storage = self.ram2(s_2, s_1, s_0, di_1, write)
-        ram_2_storage = self.ram1(s_2, s_1, s_0, di_0, write)
-
-        return ram_2_storage, ram_1_storage
-
-    def get(self, s_2, s_1, s_0):
-        return self.ram2.get(s_2, s_1, s_0), self.ram1.get(s_2, s_1, s_0)
-
-    def get_all(self):
-        return self.ram2.get_all(), self.ram1.get_all()
-
-
-class _8x8_ram:
-
-    def __init__(self):
-        self.ram1 = _8x2_ram()
-        self.ram2 = _8x2_ram()
-        self.ram3 = _8x2_ram()
-        self.ram4 = _8x2_ram()
-
-    def __call__(self, s_2, s_1, s_0, di_7, di_6, di_5, di_4, di_3, di_2, di_1, di_0, write):
-        ram_1_storage = self.ram1(s_2, s_1, s_0, di_0, di_1, write)
-        ram_2_storage = self.ram2(s_2, s_1, s_0, di_2, di_3, write)
-        ram_3_storage = self.ram3(s_2, s_1, s_0, di_4, di_5, write)
-        ram_4_storage = self.ram4(s_2, s_1, s_0, di_6, di_7, write)
-
-        return ram_4_storage, ram_3_storage, ram_2_storage, ram_1_storage
-
-    def get(self, s_2, s_1, s_0):
-        return self.ram4.get(s_2, s_1, s_0), self.ram3.get(s_2, s_1, s_0), self.ram2.get(s_2, s_1, s_0), \
-               self.ram1.get(s_2, s_1, s_0)
-
-
-class _16x4_ram:
-    def __init__(self):
-        self.ram1 = _16x1_ram()
-        self.ram2 = _16x1_ram()
-        self.ram3 = _16x1_ram()
-        self.ram4 = _16x1_ram()
-
-    def __call__(self, a_3, a_2, a_1, a_0, di_3, di_2, di_1, di_0, write):
-        out4 = self.ram4(a_3, a_2, a_1, a_0, di_3, write)
-        out3 = self.ram3(a_3, a_2, a_1, a_0, di_2, write)
-        out2 = self.ram2(a_3, a_2, a_1, a_0, di_1, write)
-        out1 = self.ram1(a_3, a_2, a_1, a_0, di_0, write)
-
-        return out4, out3, out2, out1
-
-class _32x1_ram:
-    def __init__(self):
-        self.ram1 = _16x1_ram()
-        self.ram2 = _16x1_ram()
-
-    def __call__(self, a_4, a_3, a_2, a_1, a_0, data_in, write):
-        do_1, do_2 = _1_to_2_decoder(a_4, data_in)
-
-        ram_1_out = self.ram1(a_3, a_2, a_1, a_0, write, do_1)
-        ram_2_out = self.ram2(a_3, a_2, a_1, a_0, write, do_2)
-
-        return ram_2_out, ram_1_out
-
-    def get(self, a_4, a_3, a_2, a_1, a_0):
-        return _2_to_1_selector(a_4, self.ram1.get(a_3, a_2, a_1, a_0), self.ram2.get(a_3, a_2, a_1, a_0))
-
-
