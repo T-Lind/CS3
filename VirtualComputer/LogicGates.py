@@ -1,30 +1,3 @@
-# Print booleans as binary numbers
-def print_byte_pairs(bool_list: list):
-    for i in bool_list:
-        if i:
-            print(1, end="")
-        else:
-            print(0, end="")
-    print()
-
-
-def print_hl_bytes(bool_list: list):
-    for i in range(len(bool_list) - 1, -1, -1):
-        for j in bool_list[i]:
-            if j:
-                print(1, end="")
-            else:
-                print(0, end="")
-        print(" ", end="")
-    print()
-
-def print_multi_bytes(bool_list: list):
-    for mem in bool_list:
-        print_hl_bytes(mem)
-    print()
-
-
-
 def cvt_int(*int_list):
     return (bool(val) for val in int_list)
 
@@ -324,8 +297,10 @@ class _16x1_ram:
         return ram_2_out, ram_1_out
 
     def get(self, a_3, a_2, a_1, a_0):
-        return _2_to_1_selector(a_3, self.ram1.get(a_2, a_1, a_0), self.ram2.get(a_2, a_1, a_0))
+        return _2_to_1_selector(a_3, self.ram2.get(a_2, a_1, a_0), self.ram1.get(a_2, a_1, a_0))
 
+    def get_all(self):
+        return self.ram2.get_all(), self.ram1.get_all()
 
 class _8x2_ram:
     def __init__(self):
@@ -380,5 +355,21 @@ class _16x4_ram:
         out1 = self.ram1(a_3, a_2, a_1, a_0, di_0, write)
 
         return out4, out3, out2, out1
+
+class _32x1_ram:
+    def __init__(self):
+        self.ram1 = _16x1_ram()
+        self.ram2 = _16x1_ram()
+
+    def __call__(self, a_4, a_3, a_2, a_1, a_0, data_in, write):
+        do_1, do_2 = _1_to_2_decoder(a_4, data_in)
+
+        ram_1_out = self.ram1(a_3, a_2, a_1, a_0, write, do_1)
+        ram_2_out = self.ram2(a_3, a_2, a_1, a_0, write, do_2)
+
+        return ram_2_out, ram_1_out
+
+    def get(self, a_4, a_3, a_2, a_1, a_0):
+        return _2_to_1_selector(a_4, self.ram1.get(a_3, a_2, a_1, a_0), self.ram2.get(a_3, a_2, a_1, a_0))
 
 
