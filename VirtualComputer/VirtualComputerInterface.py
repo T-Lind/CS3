@@ -1,5 +1,5 @@
-from VirtualComputer.LogicGates import _8x1_ram, _one_bit_mem
+from VirtualComputer.LogicGates import _8x1_ram, _8x8_ram, print_bin
 
-mem = _8x1_ram()
-mem(True, False, True, True, True)
-print(mem.get(False, True, True))
+ram = _8x8_ram()
+print(ram(True, False, True, True, True, True, True, False, True, True, True, True))
+print_bin(ram.get(True, False, True))

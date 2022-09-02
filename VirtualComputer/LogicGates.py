@@ -1,3 +1,13 @@
+# Print booleans as binary numbers
+def print_bin(bool_list: list):
+    for i in bool_list:
+        if i:
+            print(1, end="")
+        else:
+            print(0, end="")
+    print()
+
+
 # Basic logic gates
 
 def _and(a, b):
@@ -223,6 +233,15 @@ def _3_to_8_decoder(s_2, s_1, s_0, data_in):
 
     return o_7, o_6, o_5, o_4, o_3, o_2, o_1, o_0
 
+def _1_to_2_decoder(a_0, data_in):
+    inv_a_0 = _not(a_0)
+
+    o_0 = _and(data_in, inv_a_0)
+    o_1 = _and(data_in, a_0)
+
+    return o_1, o_0
+
+
 
 class _8x1_ram:
     def __init__(self):
@@ -237,7 +256,7 @@ class _8x1_ram:
 
     def __call__(self, s_2, s_1, s_0, write, data_in):
         w_7, w_6, w_5, w_4, w_3, w_2, w_1, w_0 = _3_to_8_decoder(s_2, s_1, s_0, write)
-        print(w_7, w_6, w_5, w_4, w_3, w_2, w_1, w_0)
+        # print(w_7, w_6, w_5, w_4, w_3, w_2, w_1, w_0)
 
         d_0 = self.bit_0(w_0, data_in)
         d_1 = self.bit_1(w_1, data_in)
@@ -265,10 +284,64 @@ class _8x1_ram:
         return self.bit_7.get_state(), self.bit_6.get_state(), self.bit_5.get_state(), self.bit_4.get_state(), \
                self.bit_3.get_state(), self.bit_2.get_state(), self.bit_1.get_state(), self.bit_0.get_state()
 
+class _16x1_ram:
+    def __init__(self):
+        self.ram1 = _8x1_ram()
+        self.ram2 = _8x1_ram()
+
+    def __call__(self, a_3, a_2, a_1, a_0, data_in, write):
+        do_1, do_2 = _1_to_2_decoder(a_3, data_in)
+
+        ram_1_out = self.ram1(a_2, a_1, a_0, write, do_1)
+        ram_2_out = self.ram2(a_2, a_1, a_0, write, do_2)
+
+        return ram_2_out, ram_1_out
+
+    def get(self, a_3, a_2, a_1, a_0):
+
+
 class _8x2_ram:
     def __init__(self):
         self.ram1 = _8x1_ram()
         self.ram2 = _8x1_ram()
 
-    # def __call__(self, ):
+    def __call__(self, s_2, s_1, s_0, di_1, di_0, write):
+        ram_1_storage = self.ram2(s_2, s_1, s_0, di_1, write)
+        ram_2_storage = self.ram1(s_2, s_1, s_0, di_0, write)
 
+        return ram_2_storage, ram_1_storage
+
+    def get(self, s_2, s_1, s_0):
+        return self.ram2.get(s_2, s_1, s_0), self.ram1.get(s_2, s_1, s_0)
+
+    def get_all(self):
+        return self.ram2.get_all(), self.ram1.get_all()
+
+
+class _8x8_ram:
+
+    def __init__(self):
+        self.ram1 = _8x2_ram()
+        self.ram2 = _8x2_ram()
+        self.ram3 = _8x2_ram()
+        self.ram4 = _8x2_ram()
+
+    def __call__(self, s_2, s_1, s_0, di_7, di_6, di_5, di_4, di_3, di_2, di_1, di_0, write):
+        ram_1_storage = self.ram1(s_2, s_1, s_0, di_0, di_1, write)
+        ram_2_storage = self.ram1(s_2, s_1, s_0, di_2, di_3, write)
+        ram_3_storage = self.ram1(s_2, s_1, s_0, di_4, di_5, write)
+        ram_4_storage = self.ram1(s_2, s_1, s_0, di_6, di_7, write)
+
+        return ram_4_storage, ram_3_storage, ram_2_storage, ram_1_storage
+
+    def get(self, s_2, s_1, s_0):
+        return self.ram4.get(s_2, s_1, s_0), self.ram3.get(s_2, s_1, s_0), self.ram2.get(s_2, s_1, s_0), \
+               self.ram1.get(s_2, s_1, s_0)
+
+class _16x8_ram:
+    def __init__(self):
+        self.ram1 = _8x8_ram()
+        self.ram2 = _8x8_ram()
+
+    def __call__(self, a_3, a_2, a_1, a_0, di_7, di_6, di_5, di_4, di_3, di_2, di_1, di_0, write):
+        d0_0 = _1_to_2_decoder(a_3, d)
