@@ -2,15 +2,22 @@ def cvt_int(*int_list):
     return (bool(val) for val in int_list)
 
 
-def print_hex(bool_list):
+def print_hex(bool_list, end="\n"):
     str_val = ""
     for i in bool_list:
         str_val += str(int(i))
     val = str_val.encode('ascii')
     num = int(val, 2)
     hex_num = hex(num)
-    print(hex_num)
+    print(hex_num, end=end)
 
+def print_dec(bool_list, end="\n"):
+    str_val = ""
+    for i in bool_list:
+        str_val += str(int(i))
+    val = str_val.encode('ascii')
+    num = int(val, 2)
+    print(num, end=end)
 
 def print_hex_long(bool_list: list):
     try:
@@ -60,3 +67,7 @@ def print_5_depth(bool_list: list):
         for item in mem:
             print_3_depth(item)
     print()
+
+def bin_to_bools(number):
+    res = [bool(int(x)) for x in str(number)]
+    return res
