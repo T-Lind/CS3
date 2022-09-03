@@ -84,7 +84,10 @@ class _16_bit_ripple_counter:
 
         self.clk = False
 
-    def __call__(self):
+    def __call__(self, clear=False):
+        if clear:
+            self.__init__()
+
         self.clk = _not(self.clk)
 
         q1 = self.ff1(self.ff1.q_bar, self.clk)

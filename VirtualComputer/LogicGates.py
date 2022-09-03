@@ -112,11 +112,9 @@ class _8_bit_latch:
         self.latch_6 = _one_bit_mem()
         self.latch_7 = _one_bit_mem()
 
-    def __call__(self, d_7, d_6, d_5, d_4, d_3, d_2, d_1, d_0, write):
-        return self.latch_7(write, d_7), self.latch_6(write, d_6), self.latch_5(write, d_5), \
-               self.latch_4(write, d_4), \
-               self.latch_3(write, d_3), self.latch_2(write, d_2), self.latch_1(write, d_1), \
-               self.latch_0(write, d_0)
+    def __call__(self, d_7, d_6, d_5, d_4, d_3, d_2, d_1, d_0, clk):
+        return self.latch_7(clk, d_7), self.latch_6(clk, d_6), self.latch_5(clk, d_5), self.latch_4(clk, d_4), \
+               self.latch_3(clk, d_3), self.latch_2(clk, d_2), self.latch_1(clk, d_1), self.latch_0(clk, d_0)
 
     def get_state(self):
         return self.latch_7.get_state(), self.latch_6.get_state(), self.latch_5.get_state(), self.latch_4.get_state(), \
@@ -185,6 +183,19 @@ def _1_to_2_decoder(a_0, data_in):
 def _2_to_1_selector(a_0, di_0, di_1):
     return _or(_and(di_0, _not(a_0)), _and(di_1, a_0))
 
+
+def _16bit_2_to_1_selector(
+        a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0,
+        b_15, b_14, b_13, b_12, b_11, b_10, b_9, b_8, b_7, b_6, b_5, b_4, b_3, b_2, b_1, b_0,
+        select):
+    return _or(_and(a_15, _not(select)), _and(b_15, select)), _or(_and(a_14, _not(select)), _and(b_14, select)), \
+           _or(_and(a_13, _not(select)), _and(b_13, select)), _or(_and(a_12, _not(select)), _and(b_12, select)), \
+           _or(_and(a_11, _not(select)), _and(b_11, select)), _or(_and(a_10, _not(select)), _and(b_10, select)), \
+           _or(_and(a_9, _not(select)), _and(b_9, select)), _or(_and(a_8, _not(select)), _and(b_8, select)), \
+           _or(_and(a_7, _not(select)), _and(b_7, select)), _or(_and(a_6, _not(select)), _and(b_6, select)), \
+           _or(_and(a_5, _not(select)), _and(b_5, select)), _or(_and(a_4, _not(select)), _and(b_4, select)), \
+           _or(_and(a_3, _not(select)), _and(b_3, select)), _or(_and(a_2, _not(select)), _and(b_2, select)), \
+           _or(_and(a_1, _not(select)), _and(b_1, select)), _or(_and(a_0, _not(select)), _and(b_0, select))
 
 class _8x1_ram:
     def __init__(self):

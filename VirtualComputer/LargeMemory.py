@@ -292,6 +292,3 @@ class _64KBx8_ram:
         ram_8_storage = self.ram8.get(a_15, a_14, a_13, a_12, a_11, a_10, a_9, a_8, a_7, a_6, a_5, a_4, a_3, a_2, a_1, a_0)
 
         return ram_8_storage, ram_7_storage, ram_6_storage, ram_5_storage, ram_4_storage, ram_3_storage, ram_2_storage, ram_1_storage
-
-    def get_all(self):
-        print(self.get())
