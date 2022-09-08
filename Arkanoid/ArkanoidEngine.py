@@ -36,6 +36,8 @@ class ArkanoidEngine:
         # Create a font object
         self.font = pygame.font.Font('freesansbold.ttf', 32)
 
+        self.create_blocks()
+
     def move_player(self):
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
@@ -53,8 +55,8 @@ class ArkanoidEngine:
                 self.ball_speed[0] = -self.ball_speed[0]
             if self.ball.top < 0 or self.ball.bottom > self.size[1]:
                 self.ball_speed[1] = -self.ball_speed[1]
-            if self.ball.bottom + 1 == self.size[
-                1] - 20 and self.player_rect.x < self.ball.x < self.player_rect.x + self.player_width:
+            if self.ball.bottom + 1 == self.size[1] - 20 and \
+                    self.player_rect.x < self.ball.x < self.player_rect.x + self.player_width:
                 self.ball_speed[1] = -self.ball_speed[1]
             self.last_moved += 1
 
@@ -73,6 +75,7 @@ class ArkanoidEngine:
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     sys.exit()
+
     def check_loss(self):
         if self.ball.bottom > self.size[1] - 10:
             self.ball_speed = [0, 0]
@@ -91,7 +94,7 @@ class ArkanoidEngine:
         self.end_catch()
 
     def create_blocks(self):
-        for r in range(10, self.size[1] // 4 + 10, self.size[1] // 4 // 6):
+        for r in range(10, self.size[1] // 4 + 10, self.size[1] // 4 // 2):
             color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
             for c in range(0, self.size[0], self.size[0] // 10):
                 block = Rect(c, r, 60, 17)
@@ -106,17 +109,20 @@ class ArkanoidEngine:
             if i >= len(self.blocks):
                 break
 
-            if self.ball.top-2 <= self.blocks[i][0].bottom <= self.ball.top+2 and self.blocks[i][0].left <= self.ball.centerx <= self.blocks[i][0].right:
+            if self.ball.top - 2 <= self.blocks[i][0].bottom <= self.ball.top + 2 and self.blocks[i][
+                0].left <= self.ball.centerx <= self.blocks[i][0].right:
                 self.ball_speed[1] = -self.ball_speed[1]
                 del self.blocks[i]
-            elif self.blocks[i][0].bottom <= self.ball.centery <= self.blocks[i][0].top and self.ball.left-2 <= self.blocks[i].right <= self.ball.left+2:
+            elif self.blocks[i][0].bottom <= self.ball.centery <= self.blocks[i][0].top and self.ball.left - 2 <= \
+                    self.blocks[i].right <= self.ball.left + 2:
                 self.ball_speed[0] = -self.ball_speed[0]
-            elif self.blocks[i][0].bottom <= self.ball.centery <= self.blocks[i][0].top and self.ball.right-2 <= self.blocks[i].left <= self.ball.right+2:
+            elif self.blocks[i][0].bottom <= self.ball.centery <= self.blocks[i][0].top and self.ball.right - 2 <= \
+                    self.blocks[i].left <= self.ball.right + 2:
                 self.ball_speed[0] = -self.ball_speed[0]
             else:
                 pygame.draw.rect(self.screen, self.blocks[i][1], self.blocks[i][0])
 
-    def run(self):
+    def __call__(self):
         self.screen.fill(self.black)
 
         for event in pygame.event.get():
