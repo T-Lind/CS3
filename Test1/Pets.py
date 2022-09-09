@@ -18,6 +18,9 @@ class Pet:
         self.weight += feed_amount
 
     def walk(self):
+        """
+        Reduces weight based on 5% of its current weight when walked
+        """
         weight_reduction = 0.05 * self.weight
         self.weight -= weight_reduction
 
@@ -25,7 +28,7 @@ class Pet:
             raise Exception(f"Walking {self.name} resulted in a weight below zero in {__name__}")
 
     def __str__(self):
-        return f"{self.name} has a weight of {self.weight:.2f}"
+        return f"{self.name} has a weight of {self.weight:.1f}"
 
 
 class Dog(Pet):
@@ -34,8 +37,9 @@ class Dog(Pet):
     as well as a custom walk function.
     """
 
-    def __init__(self, name=None, weight=None):
+    def __init__(self, name=None, weight=None, happiness="happy"):
         super(Dog, self).__init__(name, weight)
+        self.happiness = happiness
 
     def walk(self):
         """
@@ -50,7 +54,7 @@ class Dog(Pet):
         print("Bark! Bark!")
 
     def __str__(self):
-        return super(Dog, self).__str__() + " and is a very good boy!"
+        return super(Dog, self).__str__() + f" and is a {self.happiness} boy!"
 
 
 class Tiger(Pet):
@@ -58,10 +62,14 @@ class Tiger(Pet):
     A simple class which inherits the Pet class and adds functionality, like a roar function as well as a custom walk
     function
     """
-    def __init__(self, name=None, weight=None):
+    def __init__(self, name=None, weight=None, scariness="very scary"):
         super(Tiger, self).__init__(name, weight)
+        self.scariness = scariness
 
     def walk(self):
+        """
+        Simply subtracts 10% of the tiger's current weight when walked
+        """
         self.weight -= (self.weight * 0.1)
 
         if self.weight <= 0:
@@ -72,6 +80,6 @@ class Tiger(Pet):
         print("Roar!")
 
     def __str__(self):
-        return super(Tiger, self).__str__()+" and is very scary!"
+        return super(Tiger, self).__str__()+f" and is {self.scariness}!"
 
 
