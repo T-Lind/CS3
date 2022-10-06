@@ -15,6 +15,8 @@ class Queue:
         """Add an item to the rear of the deque"""
         self._items.insert(0, item)
 
+
+
     def remove_front(self):
         """Remove an item from the front of the deque"""
         return self._items.pop()
