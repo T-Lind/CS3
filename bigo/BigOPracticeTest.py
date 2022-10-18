@@ -1,5 +1,7 @@
 from timeit import Timer
 import random
+import matplotlib.pyplot as plt
+
 
 def linear_search(iterable, item):
     """
@@ -39,11 +41,55 @@ def binary_search(iterable, item):
     return __perform_binary_search(iterable, item, 0, len(iterable))
 
 
-example_list = sorted([random.randint(0, 1000)]*10000)
+def non_recursive_binary_search(arr, x):
+    low = 0
+    high = len(arr) - 1
+    mid = 0
+
+    while low <= high:
+        mid = (high + low) // 2
+
+        # If x is greater, ignore left half
+        if arr[mid] < x:
+            low = mid + 1
+
+        # If x is smaller, ignore right half
+        elif arr[mid] > x:
+            high = mid - 1
+
+        # means x is present at mid
+        else:
+            return mid
+
+    # If we reach here, then the element was not present
+    return -1
+
+
+example_list = None
 
 t1 = Timer("linear_search(example_list, max(example_list))", "from __main__ import linear_search, example_list")
-t2 = Timer("binary_search(example_list, max(example_list))", "from __main__ import binary_search, example_list")
+t2 = Timer("non_recursive_binary_search(example_list, max(example_list))",
+           "from __main__ import non_recursive_binary_search, example_list")
 
-print(f"Linear search after 10000 iterations: {t1.timeit(number=10000):15.2f} seconds")
-print(f"Binary search after 10000 iterations: {t2.timeit(number=10000):15.2f} seconds")
+# print(f"Linear search after 10000 iterations: {t1.timeit(number=10000):15.2f} seconds")
+# print(f"Binary search after 10000 iterations: {t2.timeit(number=10000):15.2f} seconds")
+time = []
+linear_search_data = []
+binary_search_data = []
+for i in range(20000):
+    example_list = sorted([random.randint(0, 10000)] * i)
 
+    try:
+        linear_search_data.append(t1.timeit(number=100))
+        binary_search_data.append(t2.timeit(number=100))
+        time.append(i)
+    except Exception as e:
+        pass
+
+plt.plot(time, linear_search_data, color="red", label="Linear Search", alpha=0.5)
+plt.plot(time, binary_search_data, color="blue", label="Binary Search", alpha=0.5)
+plt.title("Linear vs. Binary Search Timing")
+plt.xlabel("Size of list to search")
+plt.ylabel("Time to search (s)")
+plt.legend()
+plt.show()
