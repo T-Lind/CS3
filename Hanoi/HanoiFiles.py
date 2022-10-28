@@ -1,4 +1,5 @@
 import random
+import time
 
 
 class Ring:
@@ -43,11 +44,20 @@ class TowersOfHanoi:
         :return: the next recursive step of solving the tower of hanoi
         """
 
-        for ring in self.a:
-            ring.update(self.pg, self, stack=0, beneath=)
+        for i in range(len(self.a)):
+            self.a[i].update(self.pg, self, stack=0, beneath=len(self.a)-i-1)
+        for i in range(len(self.b)):
+            self.b[i].update(self.pg, self, stack=1, beneath=len(self.a)-i-1)
+        for i in range(len(self.c)):
+            self.c[i].update(self.pg, self, stack=2, beneath=len(self.a)-i-1)
+
+        time.sleep(0.5)
 
         if n == 0:
             return
         self.__tower_of_hanoi_recursive(n - 1, a, b, c)
         b.append(a.pop())
         self.__tower_of_hanoi_recursive(n - 1, c, a, b)
+
+    def solve(self):
+        self.__tower_of_hanoi_recursive(len(self.a), self.a, self.b, self.c)
