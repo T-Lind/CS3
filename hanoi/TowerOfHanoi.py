@@ -10,26 +10,6 @@ solver = TowersOfHanoi(3, pygame, window)
 
 solver()
 
-# ring1 = Ring(1)
-# ring2 = Ring(2)
-# ring3 = Ring(3)
-# ring4 = Ring(4)
-# ring5 = Ring(5)
-# ring6 = Ring(6)
-# stack = 3
-# ring1.update(pygame, window, stack=stack)
-# ring2.update(pygame, window, stack=stack, beneath=1)
-# ring3.update(pygame, window, stack=stack, beneath=2)
-# ring4.update(pygame, window, stack=stack, beneath=3)
-# ring5.update(pygame, window, stack=stack, beneath=4)
-# ring6.update(pygame, window, stack=stack, beneath=5)
-#
-# pygame.display.flip()
-# window.blit(image, (0, 0))
-# input()
-
-
-
 def tower_of_hanoi_recursive(n, a, c, b):
     """
     Solve the problem with the towers of hanoi
