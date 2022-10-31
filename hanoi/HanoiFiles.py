@@ -22,7 +22,7 @@ class Ring:
     def update(self, pg, screen, stack=0, beneath=0):
         self.stack = stack
         pg.draw.rect(screen,
-                     self.color,
+                     self.color, # 100 added to x might need to go away
                      [100 + self.stack * 150 + self.height - 0.5 * self.max_size / (beneath + 1),
                       576 - beneath * self.height - self.height, self.size_in_pixels, self.height])
 
