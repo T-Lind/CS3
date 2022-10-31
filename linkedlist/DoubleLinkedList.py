@@ -12,7 +12,7 @@ class DoubleLinkedList:
     """
     def __init__(self, value=None):
         """
-        Create a LinkedList object which has elements which store a pointer to the previous and next object.
+        Create a linkedlist object which has elements which store a pointer to the previous and next object.
         The default of all of these values is None, which can throw errors
         """
         self.top = Item(value=value, prev_pointer=None, next_pointer=None)

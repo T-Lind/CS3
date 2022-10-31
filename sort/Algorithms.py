@@ -73,7 +73,7 @@ def mergeSort(arr, l, r):
         # large l and h
         m = l + (r - l) // 2
 
-        # Sort first and second halves
+        # sort first and second halves
         mergeSort(arr, l, m)
         mergeSort(arr, m + 1, r)
         merge(arr, l, m, r)

@@ -58,15 +58,15 @@ def sum_time(sort_function, n_sum=50, array_length=1000, sort=None):
 # Expected BigO: O(n^2) for both algorithms for the average case!
 
 
-# Selection Sort Test Cases:
-print("Selection Sort Results:\n--------------------")
+# Selection sort Test Cases:
+print("Selection sort Results:\n--------------------")
 
 print(sum_time(selection_sort, sort="forward"))
 print(sum_time(selection_sort))
 print(sum_time(selection_sort, sort="reverse"))
 
-# Insertion Sort Test Cases:
-print("Insertion Sort Results:\n--------------------")
+# Insertion sort Test Cases:
+print("Insertion sort Results:\n--------------------")
 
 print(sum_time(insertion_sort, sort="forward"))
 print(sum_time(insertion_sort))

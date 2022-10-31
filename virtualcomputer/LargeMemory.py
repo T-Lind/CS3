@@ -1,4 +1,4 @@
-from VirtualComputer.LogicGates import _16x1_ram, _1_to_2_decoder, _2_to_1_selector
+from virtualcomputer.LogicGates import _16x1_ram, _1_to_2_decoder, _2_to_1_selector
 
 
 class _32x1_ram:

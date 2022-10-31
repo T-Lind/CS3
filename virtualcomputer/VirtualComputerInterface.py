@@ -1,6 +1,6 @@
-from VirtualComputer.LargeMemory import _64KBx8_ram
-from VirtualComputer.LogicGates import _16bit_2_to_1_selector, _8_bit_latch
-from VirtualComputer.PrintFuncs import print_depth, cvt_int,print_hex, print_dec, print_hex_long
+from virtualcomputer.LargeMemory import _64KBx8_ram
+from virtualcomputer.LogicGates import _16bit_2_to_1_selector, _8_bit_latch
+from virtualcomputer.PrintFuncs import print_depth, cvt_int,print_hex, print_dec, print_hex_long
 # ram(*cvt_int(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1), *cvt_int(1, 1, 1, 1, 1, 1, 1, 0), True)
 # print_hex(ram.get(*cvt_int(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1)))
 
