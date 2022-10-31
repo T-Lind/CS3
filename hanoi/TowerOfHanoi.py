@@ -1,29 +1,32 @@
 import pygame
-from Ring import Ring
+from HanoiFiles import Ring, TowersOfHanoi
 pygame.init()
 pygame.display.set_caption("Tower of Hanoi Solver")
 
 window = pygame.display.set_mode((576, 576))
 image = pygame.image.load(r'temple.jpg')
 
+solver = TowersOfHanoi(3, pygame, window)
 
-ring1 = Ring(1)
-ring2 = Ring(2)
-ring3 = Ring(3)
-ring4 = Ring(4)
-ring5 = Ring(5)
-ring6 = Ring(6)
-stack = 3
-ring1.update(pygame, window, stack=stack)
-ring2.update(pygame, window, stack=stack, beneath=1)
-ring3.update(pygame, window, stack=stack, beneath=2)
-ring4.update(pygame, window, stack=stack, beneath=3)
-ring5.update(pygame, window, stack=stack, beneath=4)
-ring6.update(pygame, window, stack=stack, beneath=5)
+solver()
 
-pygame.display.flip()
-window.blit(image, (0, 0))
-input()
+# ring1 = Ring(1)
+# ring2 = Ring(2)
+# ring3 = Ring(3)
+# ring4 = Ring(4)
+# ring5 = Ring(5)
+# ring6 = Ring(6)
+# stack = 3
+# ring1.update(pygame, window, stack=stack)
+# ring2.update(pygame, window, stack=stack, beneath=1)
+# ring3.update(pygame, window, stack=stack, beneath=2)
+# ring4.update(pygame, window, stack=stack, beneath=3)
+# ring5.update(pygame, window, stack=stack, beneath=4)
+# ring6.update(pygame, window, stack=stack, beneath=5)
+#
+# pygame.display.flip()
+# window.blit(image, (0, 0))
+# input()
 
 
 
