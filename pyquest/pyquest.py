@@ -1,62 +1,67 @@
-import sys, random
-import pygame
+import sys
 from pygame.locals import *
 from pygame import mixer
 from actors import *
-from PyQuestFunctions import Environment, render_text, play_sound
+from PyQuestFunctions import Environment, render_end_text, play_sound
 
-env = Environment()
-
-clock = pygame.time.Clock()
-
+framerate: int = 60
 in_game_loop: bool = True
 reset: bool = False
-level: int = 2
 
-while in_game_loop:
-    clock.tick(60)
+if __name__ == "__main__":
+    clock = pygame.time.Clock()
+    env = Environment(start_level=1)
+    while in_game_loop:
+        env.score += 1
+        render_end_text(f"Score: {env.score:3}",
+                        env.background,
+                        x=11 * env.background.get_width() / 12,
+                        y=env.background.get_height() // 14,
+                        window=env.window,
+                        color=(205, 205, 205),
+                        font_size=13)
 
-    # (doing event.get(type), then event.clear() is actually a Bad Thing
-    # since more events can be added that get cleared w/o being examined)
-    for event in pygame.event.get(pygame.KEYUP):
-        if event.key == pygame.K_ESCAPE:
-            in_game_loop = False
-        if reset and event.key == pygame.K_r:
-            n_eneimies: int = 10
-            for _ in range(level):
-                n_eneimies += n_eneimies // 2
-            env.reset_env(n_badguys=n_eneimies)
-            reset = False
-    env.sprites.update()
-    pygame.event.clear()
+        clock.tick(framerate)
 
-    for L in sprite.groupcollide(env.player.shots, env.badguy_sprites, True, True).values():
-        play_sound('explode.wav')
-        for badguy in L:
-            for i in range(2):
-                velocity = tuple(random.randint(0, 5) - 2 for i in range(2))
-                debris = BadGuyDebris(badguy.rect.center, velocity)
-                debris.update()
-                env.transient_sprites.add(debris)
-    if not env.badguy_sprites:
-        render_text('Clear!', env.background)
-        env.screen.blit(env.background, (0, 0))
+        # (doing event.get(type), then event.clear() is actually a Bad Thing
+        # since more events can be added that get cleared w/o being examined)
+        for event in pygame.event.get(pygame.KEYUP):
+            if event.key == pygame.K_ESCAPE:
+                in_game_loop = False
+            if reset and event.key == pygame.K_r:
+                env.reset_env()
+                reset = False
+        env.sprites.update()
+        pygame.event.clear()
 
-    # (could use spritecollide, but then have to special case prota already dead)
-    if sprite.groupcollide(env.prota_sprites, env.badguy_sprites, False, False):
-        mixer.music.fadeout(1000)
-        play_sound('explode.wav')
-        chan = play_sound('gameover.wav', 1)
-        env.prota_sprites.remove(env.player)
-        debris = ProtaDebris(env.player.rect.center, env.player.velocity)
-        debris.update()
-        env.transient_sprites.add(debris)
-    if not env.prota_sprites:
-        render_text('Game Over!', env.background)
-        render_text('(r) to reset and (ESC) to exit', env.background, font_size=18, y=env.background.get_height() // 12)
-        env.screen.blit(env.background, (0, 0))
-        reset = True
+        for L in sprite.groupcollide(env.player.shots, env.badguy_sprites, True, True).values():
+            play_sound('explode.wav')
+            for badguy in L:
+                for i in range(2):
+                    velocity = tuple(random.randint(0, 5) - 2 for i in range(2))
+                    debris = BadGuyDebris(badguy.rect.center, velocity)
+                    debris.update()
+                    env.transient_sprites.add(debris)
+        if not env.badguy_sprites:
+            render_end_text('Clear!', env.background)
+            env.screen.blit(env.background, (0, 0))
 
-    env.prepare_screen()
+        # (could use spritecollide, but then have to special case prota already dead)
+        if sprite.groupcollide(env.prota_sprites, env.badguy_sprites, False, False):
+            mixer.music.fadeout(1000)
+            play_sound('explode.wav')
+            chan = play_sound('gameover.wav', 1)
+            env.prota_sprites.remove(env.player)
+            debris = ProtaDebris(env.player.rect.center, env.player.velocity)
+            debris.update()
+            env.transient_sprites.add(debris)
+        if not env.prota_sprites:
+            render_end_text('Game Over!', env.background)
+            render_end_text('(r) to reset and (ESC) to exit', env.background, font_size=18,
+                            y=env.background.get_height() // 12)
+            env.screen.blit(env.background, (0, 0))
+            reset = True
 
-sys.exit(0)
+        env.prepare_screen()
+
+    sys.exit(0)
