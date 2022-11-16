@@ -5,6 +5,15 @@ from pygame import display, mixer, font
 from actors import *
 
 
+def get_highscore(env):
+    highscore = 0
+    with open("HighScores.pyquest", "r") as file:
+        for line in file.readlines():
+            if int(line) > highscore:
+                highscore = int(line)
+    return max(highscore, env.score)
+
+
 def _generate_spawnpoint(screen):
     # TODO: Change this to a more efficient algorithm
     spawnpoint = tuple(random.randint(0, dimension) for dimension in screen.get_size())
@@ -19,6 +28,7 @@ class Environment:
     Class that contains all sub-objects as well as other useful functions for the PyQuest
     game environment.
     """
+
     def __init__(self, start_level=1):
         """
         Create the environment
@@ -49,7 +59,7 @@ class Environment:
         self.sprites = MultiGroup(self.transient_sprites, self.player.shots, self.badguy_sprites, self.prota_sprites)
 
     def __get_n_enemies(self, level):
-        n_eneimies: int = 2
+        n_eneimies: int = 10
         for _ in range(level):
             n_eneimies += n_eneimies // 2
         return n_eneimies

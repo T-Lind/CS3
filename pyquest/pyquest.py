@@ -4,7 +4,7 @@ import time
 from pygame.locals import *
 from pygame import mixer
 from actors import *
-from PyQuestFunctions import Environment, render_end_text, play_sound
+from PyQuestFunctions import Environment, render_end_text, play_sound, get_highscore
 
 framerate: int = 60
 in_game_loop: bool = True
@@ -18,6 +18,13 @@ if __name__ == "__main__":
                         env.background,
                         x=11 * env.background.get_width() / 12,
                         y=env.background.get_height() // 14,
+                        window=env.window,
+                        color=(205, 205, 205),
+                        font_size=13)
+        render_end_text(f"High Score: {get_highscore(env):3}",
+                        env.background,
+                        x=11 * env.background.get_width() / 12,
+                        y=env.background.get_height() // 10,
                         window=env.window,
                         color=(205, 205, 205),
                         font_size=13)
@@ -35,13 +42,13 @@ if __name__ == "__main__":
         env.sprites.update()
         pygame.event.clear()
 
-        for L in sprite.groupcollide(env.player.shots, env.badguy_sprites, True, True).values():
+        for badguy in sprite.groupcollide(env.player.shots, env.badguy_sprites, True, True).values():
             env.score += 10 * env.level
             play_sound('explode.wav')
-            for badguy in L:
+            for badguy_components in badguy:
                 for i in range(2):
                     velocity = tuple(random.randint(0, 5) - 2 for i in range(2))
-                    debris = BadGuyDebris(badguy.rect.center, velocity)
+                    debris = BadGuyDebris(badguy_components.rect.center, velocity)
                     debris.update()
                     env.transient_sprites.add(debris)
         if not env.badguy_sprites:
