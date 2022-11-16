@@ -4,7 +4,7 @@ import time
 from pygame.locals import *
 from pygame import mixer
 from actors import *
-from PyQuestFunctions import Environment, render_end_text, play_sound, get_highscore
+from PyQuestFunctions import Environment, render_end_text, play_sound
 
 framerate: int = 60
 in_game_loop: bool = True
@@ -12,7 +12,7 @@ reset: bool = False
 
 if __name__ == "__main__":
     clock = pygame.time.Clock()
-    env = Environment(start_level=1)
+    env = Environment(start_level=1, scoring="cumulative")  # Other type is multiply, score = 10 * level
     while in_game_loop:
         render_end_text(f"Score: {env.score:3}",
                         env.background,
@@ -21,7 +21,7 @@ if __name__ == "__main__":
                         window=env.window,
                         color=(205, 205, 205),
                         font_size=13)
-        render_end_text(f"High Score: {get_highscore(env):3}",
+        render_end_text(f"High Score: {env.get_highscore():3}",
                         env.background,
                         x=11 * env.background.get_width() / 12,
                         y=env.background.get_height() // 10,
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         pygame.event.clear()
 
         for badguy in sprite.groupcollide(env.player.shots, env.badguy_sprites, True, True).values():
-            env.score += 10 * env.level
+            env.enemy_killed_score()
             play_sound('explode.wav')
             for badguy_components in badguy:
                 for i in range(2):
@@ -74,6 +74,10 @@ if __name__ == "__main__":
 
         env.prepare_screen()
 
-    with open("HighScores.pyquest", "a") as file:
-        file.write(str(env.score) + "\n")
+    if env.scoring_method == "multiply":
+        with open("HighScoresMult.pyquest", "a") as file:
+            file.write(str(env.score) + "\n")
+    if env.scoring_method == "cumulative":
+        with open("HighScoresCum.pyquest", "a") as file:
+            file.write(str(env.score) + "\n")
     sys.exit(0)

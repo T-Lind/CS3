@@ -5,15 +5,6 @@ from pygame import display, mixer, font
 from actors import *
 
 
-def get_highscore(env):
-    highscore = 0
-    with open("HighScores.pyquest", "r") as file:
-        for line in file.readlines():
-            if int(line) > highscore:
-                highscore = int(line)
-    return max(highscore, env.score)
-
-
 def _generate_spawnpoint(screen):
     # TODO: Change this to a more efficient algorithm
     spawnpoint = tuple(random.randint(0, dimension) for dimension in screen.get_size())
@@ -29,15 +20,17 @@ class Environment:
     game environment.
     """
 
-    def __init__(self, start_level=1):
+    def __init__(self, start_level=1, scoring="multiply"):
         """
         Create the environment
         :param start_level: The level to start at, defaults to 1 but can start at whatever you want
+        :param scoring: multiply - multiply level by 10 to add to score, cumulative - just count individual kills as 1 pt
         """
         pygame.init()
 
         self.level = start_level
         self.score = 0
+        self.scoring_method = scoring
 
         self.window = display.set_mode((800, 600), pygame.FULLSCREEN)
         display.set_caption('Python Quest')
@@ -72,10 +65,34 @@ class Environment:
         except Exception as _:
             pass
 
+    def enemy_killed_score(self):
+        if self.scoring_method == "multiply":
+            self.score += self.level * 10
+        if self.scoring_method == "cumulative":
+            self.score += 1
+        else:
+            raise TypeError("Invalid scoring type specified")
+
     def inc_level(self):
         self.player = Prota(self.window)
         self.level += 1
         self.reset_env()
+
+    def get_highscore(self):
+        highscore = 0
+        if self.scoring_method == "multiply":
+            with open("HighScoresMult.pyquest", "r") as file:
+                for line in file.readlines():
+                    if int(line) > highscore:
+                        highscore = int(line)
+            return max(highscore, self.score)
+
+        if self.scoring_method == "cumulative":
+            with open("HighScoresCum.pyquest", "r") as file:
+                for line in file.readlines():
+                    if int(line) > highscore:
+                        highscore = int(line)
+            return max(highscore, self.score)
 
     def reset_env(self, n_badguys=-1):
         pygame.init()
