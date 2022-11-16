@@ -1,4 +1,4 @@
-import time
+# import time
 
 import pygame, sys, random, itertools
 from pygame.locals import *

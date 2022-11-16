@@ -5,5 +5,5 @@ clock = pygame.time.Clock()
 
 engine = ArkanoidEngine()
 while True:
-    clock.tick(1005)
+    # clock.tick(150000)
     engine()
