@@ -1,4 +1,6 @@
 import sys
+import time
+
 from pygame.locals import *
 from pygame import mixer
 from actors import *
@@ -12,7 +14,6 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     env = Environment(start_level=1)
     while in_game_loop:
-        env.score += 1
         render_end_text(f"Score: {env.score:3}",
                         env.background,
                         x=11 * env.background.get_width() / 12,
@@ -35,6 +36,7 @@ if __name__ == "__main__":
         pygame.event.clear()
 
         for L in sprite.groupcollide(env.player.shots, env.badguy_sprites, True, True).values():
+            env.score += 10 * env.level
             play_sound('explode.wav')
             for badguy in L:
                 for i in range(2):
@@ -45,6 +47,7 @@ if __name__ == "__main__":
         if not env.badguy_sprites:
             render_end_text('Clear!', env.background)
             env.screen.blit(env.background, (0, 0))
+            env.inc_level()
 
         # (could use spritecollide, but then have to special case prota already dead)
         if sprite.groupcollide(env.prota_sprites, env.badguy_sprites, False, False):
@@ -64,4 +67,6 @@ if __name__ == "__main__":
 
         env.prepare_screen()
 
+    with open("HighScores.pyquest", "a") as file:
+        file.write(str(env.score) + "\n")
     sys.exit(0)

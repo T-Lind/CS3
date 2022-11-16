@@ -6,14 +6,24 @@ from actors import *
 
 
 def _generate_spawnpoint(screen):
+    # TODO: Change this to a more efficient algorithm
     spawnpoint = tuple(random.randint(0, dimension) for dimension in screen.get_size())
-    while screen.get_size()[0]/4 < spawnpoint[0] < 3*screen.get_size()[0]/4 and \
+    while screen.get_size()[0] / 4 < spawnpoint[0] < 3 * screen.get_size()[0] / 4 and \
             screen.get_size()[1] / 4 < spawnpoint[1] < 3 * screen.get_size()[1] / 4:
         spawnpoint = tuple(random.randint(0, dimension) for dimension in screen.get_size())
     return spawnpoint
 
+
 class Environment:
+    """
+    Class that contains all sub-objects as well as other useful functions for the PyQuest
+    game environment.
+    """
     def __init__(self, start_level=1):
+        """
+        Create the environment
+        :param start_level: The level to start at, defaults to 1 but can start at whatever you want
+        """
         pygame.init()
 
         self.level = start_level
@@ -39,7 +49,7 @@ class Environment:
         self.sprites = MultiGroup(self.transient_sprites, self.player.shots, self.badguy_sprites, self.prota_sprites)
 
     def __get_n_enemies(self, level):
-        n_eneimies: int = 10
+        n_eneimies: int = 2
         for _ in range(level):
             n_eneimies += n_eneimies // 2
         return n_eneimies
@@ -51,6 +61,11 @@ class Environment:
             display.flip()
         except Exception as _:
             pass
+
+    def inc_level(self):
+        self.player = Prota(self.window)
+        self.level += 1
+        self.reset_env()
 
     def reset_env(self, n_badguys=-1):
         pygame.init()
