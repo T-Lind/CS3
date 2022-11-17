@@ -53,7 +53,7 @@ class Environment:
 
     def __get_n_enemies(self, level):
         n_eneimies: int = 10
-        for _ in range(level):
+        for _ in range(level-1):
             n_eneimies += n_eneimies // 2
         return n_eneimies
 
@@ -93,6 +93,10 @@ class Environment:
                     if int(line) > highscore:
                         highscore = int(line)
             return max(highscore, self.score)
+
+    def reset_level_score(self):
+        self.level = 1
+        self.score = 0
 
     def reset_env(self, n_badguys=-1):
         pygame.init()

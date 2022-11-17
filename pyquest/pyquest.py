@@ -38,6 +38,7 @@ if __name__ == "__main__":
                 in_game_loop = False
             if reset and event.key == pygame.K_r:
                 env.reset_env()
+                env.reset_level_score()
                 reset = False
         env.sprites.update()
         pygame.event.clear()
