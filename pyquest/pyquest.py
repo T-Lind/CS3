@@ -4,7 +4,7 @@ import time
 from pygame.locals import *
 from pygame import mixer
 from actors import *
-from PyQuestFunctions import Environment, render_end_text, play_sound
+from PyQuestFunctions import Environment, render_end_text
 
 framerate: int = 60
 in_game_loop: bool = True
@@ -35,17 +35,19 @@ if __name__ == "__main__":
         # since more events can be added that get cleared w/o being examined)
         for event in pygame.event.get(pygame.KEYUP):
             if event.key == pygame.K_ESCAPE:
+                env.save_score()
                 in_game_loop = False
             if reset and event.key == pygame.K_r:
-                env.reset_env()
+                env.save_score()
                 env.reset_level_score()
+                env.reset_env()
                 reset = False
         env.sprites.update()
         pygame.event.clear()
 
         for badguy in sprite.groupcollide(env.player.shots, env.badguy_sprites, True, True).values():
             env.enemy_killed_score()
-            play_sound('explode.wav')
+            env.play_sound('explode.wav')
             for badguy_components in badguy:
                 for i in range(2):
                     velocity = tuple(random.randint(0, 5) - 2 for i in range(2))
@@ -60,8 +62,8 @@ if __name__ == "__main__":
         # (could use spritecollide, but then have to special case prota already dead)
         if sprite.groupcollide(env.prota_sprites, env.badguy_sprites, False, False):
             mixer.music.fadeout(1000)
-            play_sound('explode.wav')
-            chan = play_sound('gameover.wav', 1)
+            env.play_sound('explode.wav', volume=0.01)
+            chan = env.play_sound('gameover.wav', volume=0.01)
             env.prota_sprites.remove(env.player)
             debris = ProtaDebris(env.player.rect.center, env.player.velocity)
             debris.update()
@@ -74,11 +76,4 @@ if __name__ == "__main__":
             reset = True
 
         env.prepare_screen()
-
-    if env.scoring_method == "multiply":
-        with open("HighScoresMult.pyquest", "a") as file:
-            file.write(str(env.score) + "\n")
-    if env.scoring_method == "cumulative":
-        with open("HighScoresCum.pyquest", "a") as file:
-            file.write(str(env.score) + "\n")
     sys.exit(0)
