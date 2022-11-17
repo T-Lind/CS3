@@ -12,22 +12,9 @@ reset: bool = False
 
 if __name__ == "__main__":
     clock = pygame.time.Clock()
-    env = Environment(start_level=1, scoring="multiply")  # Other type is multiply, score = 10 * level
+    env = Environment(start_level=1, scoring="cumulative")  # Other type is multiply, score = 10 * level
     while in_game_loop:
-        render_end_text(f"Score: {env.score:3}",
-                        env.background,
-                        x=11 * env.background.get_width() / 12,
-                        y=env.background.get_height() // 14,
-                        window=env.window,
-                        color=(205, 205, 205),
-                        font_size=13)
-        render_end_text(f"High Score: {env.get_highscore():3}",
-                        env.background,
-                        x=11 * env.background.get_width() / 12,
-                        y=env.background.get_height() // 10,
-                        window=env.window,
-                        color=(205, 205, 205),
-                        font_size=13)
+        # TODO: Print score and high score to the top righthand corner of the game display
 
         clock.tick(framerate)
 
@@ -38,15 +25,13 @@ if __name__ == "__main__":
                 env.save_score()
                 in_game_loop = False
             if reset and event.key == pygame.K_r:
-                env.save_score()
-                env.reset_level_score()
-                env.reset_env()
-                reset = False
+                # TODO: Implement reset behavior - hard resets everything but saves prev score in the file
+                pass  # Also rmove this pass when reset behavior is implemented
         env.sprites.update()
         pygame.event.clear()
 
         for badguy in sprite.groupcollide(env.player.shots, env.badguy_sprites, True, True).values():
-            env.enemy_killed_score()
+            # TODO: Implement score increment
             env.play_sound('explode.wav')
             for badguy_components in badguy:
                 for i in range(2):
@@ -57,7 +42,7 @@ if __name__ == "__main__":
         if not env.badguy_sprites:
             render_end_text('Clear!', env.background)
             env.screen.blit(env.background, (0, 0))
-            env.inc_level()
+            # TODO: Increment level
 
         # (could use spritecollide, but then have to special case prota already dead)
         if sprite.groupcollide(env.prota_sprites, env.badguy_sprites, False, False):
@@ -70,10 +55,8 @@ if __name__ == "__main__":
             env.transient_sprites.add(debris)
         if not env.prota_sprites:
             render_end_text('Game Over!', env.background)
-            render_end_text('(r) to reset and (ESC) to exit', env.background, font_size=18,
-                            y=env.background.get_height() // 12)
+            # TODO: Implement printing the message: '(r) to reset and (ESC) to exit' below 'Game Over!' to inform player
             env.screen.blit(env.background, (0, 0))
-            reset = True
 
         env.prepare_screen()
     sys.exit(0)

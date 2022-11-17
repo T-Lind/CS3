@@ -60,7 +60,7 @@ class Environment:
         :return: The number of enemies, starts at 10 and adds 50% each time
         """
 
-        # TODO: Implement the function behavior to return the correct # of enemies
+        # TODO: Implement the function behavior to return the correct # of enemies given a level
         return 0
 
     def prepare_screen(self) -> None:
@@ -129,26 +129,8 @@ class Environment:
         otherwise default is to just adhere to what the level says
         :param n_badguys: How many bad guys to spawn, less than 0 = default #
         """
-        pygame.init()
-
-        if n_badguys <= 0:
-            n_badguys = self.__get_n_enemies(self.level)
-
-        self.window = display.set_mode((800, 600), pygame.FULLSCREEN)
-        display.set_caption('Python Quest')
-        self.screen = display.get_surface()
-        mouse.set_visible(False)
-
-        self.background = pygame.Surface(self.screen.get_size())
-        self.player = Prota(self.window)
-        self.prota_sprites = sprite.Group(self.player)
-        self.badguy_sprites = sprite.Group()
-        self.transient_sprites = sprite.Group()
-        for i in range(n_badguys):
-            spawnpoint = self._generate_spawnpoint()
-            self.badguy_sprites.add(BadGuy(self.window, spawnpoint))
-        # we want prota to be drawn last, so put it last in the multigroup
-        self.sprites = MultiGroup(self.transient_sprites, self.player.shots, self.badguy_sprites, self.prota_sprites)
+        # TODO: Implement environment resetting, this should reset the player to the center
+        #  and also reset enemies. Should NOT reset everything, score and level should remain constant
 
     def _generate_spawnpoint(self) -> tuple:
         """
@@ -156,7 +138,8 @@ class Environment:
         :param window: the object containing just where the game is on the screen
         :return: a random spawn point
         """
-        return random.choice(self.ranges), random.choice(self.ranges)
+        # TODO: Implement randomly generated spawnpoint! Should not spawn in middle half
+        return (0, 0)
 
     def play_sound(self, filename, volume=0.5) -> Channel:
         """
@@ -215,8 +198,6 @@ def render_end_text(
     textRect = text.get_rect()
     textRect.center = (x, y)
 
-    # text = font.Font(None, font_size).render(string_text, True, color)
-    # textRect = text.get_rect()
     bkg.blit(text, textRect)
     if window is not None:
         window.blit(text, textRect)
