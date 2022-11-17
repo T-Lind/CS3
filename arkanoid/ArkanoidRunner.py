@@ -1,9 +1,10 @@
 import pygame
 
 from ArkanoidEngine import ArkanoidEngine
-clock = pygame.time.Clock()
 
-engine = ArkanoidEngine()
-while True:
-    # clock.tick(150000)
-    engine()
+if __name__ == "__main__":
+    clock = pygame.time.Clock()
+    clock.tick(100)
+    engine = ArkanoidEngine()
+    while True:
+        engine()

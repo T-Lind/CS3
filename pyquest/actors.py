@@ -1,3 +1,4 @@
+import math
 import random
 from collections import deque
 import pygame
@@ -53,7 +54,7 @@ class Point:
 
     def magnitude(self):
         import math
-        return math.sqrt(self.x ** 2 + self.y ** 2)
+        return math.hypot(self.x, self.y)
 
     def __mul__(self, rhs):
         return Point((self.x * rhs, self.y * rhs))
@@ -127,8 +128,8 @@ class BadGuy(AnimatedSprite):
             self.rect.clamp_ip(self.window.get_rect())
             self.velocity = -self.velocity
         if not random.randint(0, 60):
-            self.velocity.x = absmin(2, self.velocity.x + random.randint(0, 5) - 2)
-            self.velocity.y = absmin(2, self.velocity.y + random.randint(0, 5) - 2)
+            self.velocity.x = absmin(3, self.velocity.x + random.randint(0, 5) - 2)
+            self.velocity.y = absmin(3, self.velocity.y + random.randint(0, 5) - 2)
 
 
 class Shot(sprite.Sprite):
@@ -163,14 +164,14 @@ class Prota(sprite.Sprite):
     def fire_projectile(self):
         if not self.velocity:
             return
-        for event in pygame.event.get(pygame.MOUSEBUTTONDOWN):
-            if event.button == 1:
+        for _ in pygame.event.get(pygame.MOUSEWHEEL):
+            if random.random() > 0.5:
                 self.shots.add(Shot(self.shots, self.window, self.rect.center, self.velocity * 2))
 
     def move(self):
         dx, dy = mouse.get_rel()
-        self.velocity.x += dx / 5.0
-        self.velocity.y += dy / 5.0
+        self.velocity.x += dx / 25.0
+        self.velocity.y += dy / 25.0
         self.rect.move_ip(tuple(self.velocity))
         if not self.window.get_rect().contains(self.rect):
             self.rect.clamp_ip(self.window.get_rect())

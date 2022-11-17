@@ -12,7 +12,7 @@ reset: bool = False
 
 if __name__ == "__main__":
     clock = pygame.time.Clock()
-    env = Environment(start_level=1, scoring="multiply")  # Other type is multiply, score = 10 * level
+    env = Environment(start_level=1, scoring="cumulative")  # Other type is multiply, score = 10 * level
     while in_game_loop:
         render_end_text(f"Score: {env.score:3}",
                         env.background,
@@ -42,6 +42,7 @@ if __name__ == "__main__":
                 env.reset_level_score()
                 env.reset_env()
                 reset = False
+
         env.sprites.update()
         pygame.event.clear()
 
