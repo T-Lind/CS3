@@ -22,9 +22,7 @@ class Environment:
         pygame.init()
 
         # Level should be set to whatever you want to start at, with no score and either multiply/cumulative scoring
-        self.level = start_level
-        self.score = 0
-        self.scoring_method = scoring
+        # TODO: Implement level and scoring variables & methods
 
         # Create the objects governing the game
         self.window = display.set_mode((win_width, win_height), pygame.FULLSCREEN)
@@ -42,10 +40,6 @@ class Environment:
 
         # Spawn in the enemies
 
-        # Range for spawning enemies
-        self.ranges = [i for i in range(0, self.window.get_width() // 4)] \
-                      + [i for i in range(3 * self.window.get_width() // 4, self.window.get_width())]
-
         for i in range(self.__get_n_enemies(self.level)):
             spawnpoint = self._generate_spawnpoint()
             self.badguy_sprites.add(BadGuy(self.window, spawnpoint))
@@ -53,7 +47,7 @@ class Environment:
         self.sprites = MultiGroup(self.transient_sprites, self.player.shots, self.badguy_sprites, self.prota_sprites)
 
         # Determine the high score and store it
-        self.highscore = self.read_highscore()
+        # TODO: Read the high score and store it here
 
         # Load sounds
         self.explode_sound = mixer.Sound("explode.wav")
@@ -65,17 +59,15 @@ class Environment:
         :param level: The level of the game to calculate (1->inf)
         :return: The number of enemies, starts at 10 and adds 50% each time
         """
-        n_eneimies: int = 10
-        for _ in range(level - 1):
-            n_eneimies += n_eneimies // 2
-        return n_eneimies
+
+        # TODO: Implement the function behavior to return the correct # of enemies
+        return 0
 
     def prepare_screen(self) -> None:
         """
         Clear the screen and draw the background
         """
 
-        # TODO: Remove try/catch!
         try:
             self.sprites.clear(self.screen, self.background)
             self.sprites.draw(self.screen)
@@ -87,6 +79,9 @@ class Environment:
         """
         Add a certain amount of score based on the scoring method described when an enemy is killed
         """
+
+        # TODO: Use this function when an enemy dies to add an amount to the score
+
         if self.scoring_method == "multiply":
             self.score += self.level * 10
         elif self.scoring_method == "cumulative":
@@ -98,9 +93,7 @@ class Environment:
         """
         Add one to the level, reset the player, and environment
         """
-        self.player = Prota(self.window)
-        self.level += 1
-        self.reset_env()
+        # TODO: Implement function as defined above ^^
 
     def get_highscore(self) -> int:
         """
@@ -113,29 +106,14 @@ class Environment:
         Read local file data to determine the highest score
         """
         highscore = 0
-        if self.scoring_method == "multiply":
-            with open("HighScoresMult.pyquest", "r") as file:
-                for line in file.readlines():
-                    if int(line) > highscore:
-                        highscore = int(line)
-
-        if self.scoring_method == "cumulative":
-            with open("HighScoresCum.pyquest", "r") as file:
-                for line in file.readlines():
-                    if int(line) > highscore:
-                        highscore = int(line)
+        # TODO: Implement file reading to get the highest core available
         return highscore
 
     def save_score(self) -> None:
         """
         Save scores in their respective files, only if the score is nonzero
         """
-        if self.scoring_method == "multiply" and self.score != 0:
-            with open("HighScoresMult.pyquest", "a") as file:
-                file.write(str(self.score) + "\n")
-        elif self.scoring_method == "cumulative" and self.score != 0:
-            with open("HighScoresCum.pyquest", "a") as file:
-                file.write(str(self.score) + "\n")
+        # TODO: Save the current score to the correct file based on the scoring method specified
 
     def reset_level_score(self) -> None:
         """
