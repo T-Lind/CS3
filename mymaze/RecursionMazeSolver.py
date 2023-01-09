@@ -24,7 +24,7 @@ def solve_maze(maze: Maze):
     print(states)
 
     if solve_steps > 1 and maze_copy.in_dead_end() is not False:
-
+        pass
 
     for i in range(len(states)):
         if states[i] is False:

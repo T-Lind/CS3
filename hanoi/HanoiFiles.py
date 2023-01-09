@@ -1,10 +1,11 @@
 import random
 import time
 
-import pygame.display
-
 
 class Ring:
+    """
+    Object for each block in the tower of Hanoi
+    """
     def __init__(self, precedence, size_in_pixels, height=20, horiz_offset=75, min_color=100, max_color=255,
                  stack_spacing=200, window_size=576):
         self.precedence = precedence
@@ -25,7 +26,14 @@ class Ring:
         self.stack_spacing = stack_spacing
         self.window_size = window_size
 
-    def update(self, pg, screen, stack=0, beneath=0):
+    def update(self, pg, screen, stack=0, beneath=0) -> None:
+        """
+        Move this ring object
+        :param pg: the pygame object
+        :param screen: the instantiated screen object from Pygame
+        :param stack: the stack that the current ring is in
+        :param beneath: number of rings beneath the current. used for y axis alignment
+        """
         self.stack = stack
         pg.draw.rect(screen,
                      self.color,  # 100 added to x might need to go away, mult. changed from 150
@@ -69,7 +77,7 @@ class TowersOfHanoi:
         print(f"Time to solve: {after_time - before_time} seconds.")
         print(f"Steps to solve: {self.num_steps} steps.")
 
-    def __tower_of_hanoi_recursive(self, n, a, c, b):
+    def __tower_of_hanoi_recursive(self, n, a, c, b) -> None:
         """
         Solve the problem with the towers of hanoi
         :param n: the number of rings to stack
