@@ -1,6 +1,15 @@
 hex_to_dec_table = {"0": 0, "1": 1, "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "A": 10, "B": 11,
                     "C": 12, "D": 13, "E": 14, "F": 15}
 
+inv_table = {"0": "1", "1": "0"}
+
+def _inv_bits(num: str) -> str:
+    num_inv = ""
+    for character in num:
+        num_inv += inv_table[character]
+    return num_inv
+
+
 def bin_to_hex(number: str, hex_nums=128) -> str:
     bin_number = int(number)
     temp = 0
@@ -74,15 +83,8 @@ def add_bin(num1: str, num2: str) -> str:
 
     return ret_str.zfill(max(len(num1), len(num2)))
 
-inv_table = {"0": "1", "1": "0"}
 
-def _inv_bits(num: str) -> str:
-    num_inv = ""
-    for character in num:
-        num_inv += inv_table[character]
-    return num_inv
-
-def sub_bin(num1, num2):
+def sub_bin(num1, num2) -> str:
     max_len = len(num1)
 
     result = ''
