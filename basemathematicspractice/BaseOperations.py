@@ -58,20 +58,51 @@ def hex_to_dec(hex_number: str) -> str:
     return str(result)
 
 def add_bin(num1: str, num2: str) -> str:
-    result = ''
+    ret_str = ''
     carry = 0
 
     for i in range(max(len(num1), len(num2)) - 1, -1, -1):
         remainder = carry
         remainder += 1 if int(num1[i]) else 0
         remainder += 1 if int(num2[i]) else 0
-        result = ('1' if remainder % 2 == 1 else '0') + result
+        ret_str = ('1' if remainder % 2 == 1 else '0') + ret_str
 
         carry = 0 if remainder <= 1 else 1
 
     if carry != 0:
-        result = '1' + result
+        ret_str = '1' + ret_str
 
-    return result.zfill(max(len(num1), len(num2)))
+    return ret_str.zfill(max(len(num1), len(num2)))
 
+inv_table = {"0": "1", "1": "0"}
 
+def _inv_bits(num: str) -> str:
+    num_inv = ""
+    for character in num:
+        num_inv += inv_table[character]
+    return num_inv
+
+def sub_bin(num1, num2):
+    max_len = len(num1)
+
+    result = ''
+    temp = 0
+    for i in range(max_len -1, -1, -1):
+        num = int(num1[i]) - int(num2[i]) - temp
+        if num % 2 == 1:
+            result = '1' + result
+        else:
+            result = '0' + result
+
+        if num < 0:
+            temp = 1
+        else:
+            temp = 0
+
+    if temp != 0:
+        result = "01" + result
+
+    if int(result) == 0:
+        result = 0
+
+    return result
