@@ -12,6 +12,9 @@ def bin_to_hex(number: str, hex_nums=128) -> str:
 
     i = 0
     while bin_number > 0:
+        if i > hex_nums:
+            raise IndexError(f"Needed more than {hex_nums} hex hums to convert 0b{number} to hex")
+
         remainder = bin_number % 10
         temp = temp + (remainder * mult)
 
