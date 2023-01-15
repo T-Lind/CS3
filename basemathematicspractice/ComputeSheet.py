@@ -1,4 +1,4 @@
-from BaseOperations import bin_to_hex, hex_to_dec, add_bin
+from BaseOperations import bin_to_hex, hex_to_dec, add_bin, sub_bin
 
 def add_bin_nums(num1, num2):
     max_len = max(len(num1), len(num2))
@@ -23,3 +23,19 @@ if __name__ == '__main__':
     add_bin_nums("100011", "101110")
     add_bin_nums("100010", "110000")
     add_bin_nums("101110", "110101")
+
+
+    print("SUBTRACTING BINARY NUMBERS WORKSHEET\n--------------")
+    print("Solving row 2:\n")
+
+    sub_bin_nums("101101", "110010")
+    sub_bin_nums("101010", "110100")
+    sub_bin_nums("101001", "110101")
+    sub_bin_nums("100110", "110110")
+
+    print("Solving row 5:\n")
+
+    sub_bin_nums("101001", "100101")
+    sub_bin_nums("100011", "101110")
+    sub_bin_nums("100010", "110000")
+    sub_bin_nums("101110", "110101")
