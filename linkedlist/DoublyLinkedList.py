@@ -1,4 +1,7 @@
+from typing import Any
+
 from Item import Item
+
 
 class NoneTypeException(Exception):
     """
@@ -6,10 +9,12 @@ class NoneTypeException(Exception):
     """
     pass
 
-class DoubleLinkedList:
+
+class DoublyLinkedList:
     """
     A class to represent a doubly-linked list, so you can traverse it forwards as well as back
     """
+
     def __init__(self, value=None):
         """
         Create a linkedlist object which has elements which store a pointer to the previous and next object.
@@ -17,7 +22,7 @@ class DoubleLinkedList:
         """
         self.top = Item(value=value, prev_pointer=None, next_pointer=None)
 
-    def push(self, value):
+    def push(self, value) -> None:
         """
         Push a value to the end of the list
         :param value: The value to push
@@ -28,12 +33,12 @@ class DoubleLinkedList:
 
         new_item = Item(value=value, prev_pointer=self.top, next_pointer=None)
 
-        self.check_none_exception(self.top)
+        self.__check_none_exception(self.top)
 
         self.top.next_pointer = new_item
         self.top = new_item
 
-    def push_front(self, value):
+    def push_front(self, value) -> None:
         """
         Push a value to the front ot the list
         :param value: the value to push
@@ -45,60 +50,60 @@ class DoubleLinkedList:
         insert_item = Item(value=value, prev_pointer=None, next_pointer=None)
         first_item = self.get_first_item()
 
-        self.check_none_exception(first_item)
+        self.__check_none_exception(first_item)
 
         insert_item.next_pointer = first_item
         first_item.prev_pointer = insert_item
 
-        return first_item.value
+        # return first_item.value
 
-    def pop(self):
+    def pop(self) -> Any:
         """
         Pop an element from the END of the list
         :return: The popped item's value
         """
         popped_item = self.top
 
-        self.check_none_exception(popped_item)
+        self.__check_none_exception(popped_item)
 
         if self.top.prev_pointer is not None:
             self.top = self.top.prev_pointer
             return popped_item.value
 
-    def pop_front(self):
+    def pop_front(self) -> Any:
         """
         Pop an element from the FRONT of the list
         :return: The popped item's value
         """
         first_item = self.get_first_item()
 
-        self.check_none_exception(first_item)
+        self.__check_none_exception(first_item)
 
         first_item.next_pointer.prev_pointer = None
         return first_item.value
 
-    def peek(self):
+    def peek(self) -> Any:
         """
         Look at the last element's value but don't remove it
         :return: The last element's value
         """
 
-        self.check_none_exception(self.top)
+        self.__check_none_exception(self.top)
 
         return self.top.value
 
-    def peek_front(self):
+    def peek_front(self) -> Any:
         """
         Look at the front element's value but don't remove it
         :return: The front element's value
         """
         first_item = self.get_first_item()
 
-        self.check_none_exception(first_item)
+        self.__check_none_exception(first_item)
 
         return first_item.value
 
-    def get_front(self, index):
+    def get_front(self, index) -> Any:
         """
         A function to get the index pushed, from the front: NOTE: computation is O(nmp) as it must go back through the
         list to the front as well as check for an index exception
@@ -112,11 +117,16 @@ class DoubleLinkedList:
         for i in range(index):
             get_item = get_item.next_pointer
 
-        self.check_none_exception(get_item)
+        self.__check_none_exception(get_item)
 
         return get_item.value
 
-    def get(self, index):
+    def get(self, index) -> Any:
+        """
+        Return an item's VALUE at the given index.
+        :param index: The item to return
+        :return: the value at the given location
+        """
         self.check_index_exception(index)
 
         get_item = self.top
@@ -124,11 +134,16 @@ class DoubleLinkedList:
         for i in range(index):
             get_item = get_item.prev_pointer
 
-        self.check_none_exception(get_item)
+        self.__check_none_exception(get_item)
 
         return get_item.value
 
-    def get_item(self, index):
+    def get_object(self, index):
+        """
+        Return the object in the linked list at the certain index
+        :param index: The index of the object to retreive
+        :return: The object at the given index
+        """
         self.check_index_exception(index)
 
         get_item = self.top
@@ -136,14 +151,18 @@ class DoubleLinkedList:
         for i in range(index):
             get_item = get_item.prev_pointer
 
-        self.check_none_exception(get_item)
+        self.__check_none_exception(get_item)
 
         return get_item
 
-    def remove(self, index):
+    def remove(self, index) -> None:
+        """
+        Take out an index and patch the list
+        :param index: The index to remove
+        """
         self.check_index_exception(index)
 
-        get_item = self.get_item(index)
+        get_item = self.get_object(index)
 
         prev_item = get_item.prev_pointer
         next_item = get_item.next_pointer
@@ -163,21 +182,32 @@ class DoubleLinkedList:
         prev_item.next_pointer = next_item.prev_pointer
         next_item.prev_pointer = prev_item.next_pointer
 
-
-    def get_first_item(self):
+    def get_first_item(self) -> Any:
+        """
+        Get the first item in the list
+        :return: the top item
+        """
         first_item = self.top
 
-        self.check_none_exception(first_item)
+        self.__check_none_exception(first_item)
 
         while first_item.prev_pointer is not None:
             first_item = first_item.prev_pointer
         return first_item
 
-    def check_none_exception(self, item):
+    def __check_none_exception(self, item):
+        """
+        Perform basic check to make sure the list is functioning properly
+        :param item: The item to check
+        """
         if item.value is None and item.prev_pointer is None and item.next_pointer is None:
             raise NoneTypeException("Cannot acces a none type item!")
 
     def check_index_exception(self, index):
+        """
+        Determine if an index exists
+        :param index: The index to check
+        """
         if index >= len(self) or index < 0:
             raise IndexError(f"Incorrectly accessing index {index} in {__name__}")
 
@@ -193,6 +223,3 @@ class DoubleLinkedList:
             first_item = first_item.prev_pointer
             count += 1
         return count
-
-
-

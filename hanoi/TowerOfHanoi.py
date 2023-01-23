@@ -1,5 +1,5 @@
 import pygame
-from HanoiFiles import TowersOfHanoi
+from HanoiFiles import TowersOfHanoiSolver
 pygame.init()
 
 if __name__ == "__main__":
@@ -16,7 +16,7 @@ if __name__ == "__main__":
     window = pygame.display.set_mode((576, 576))
 
     # Create the tower of hanoi
-    solver = TowersOfHanoi(N_RINGS, pygame, window, height=HEIGHT, action_delay=ACTION_DELAY)
+    solver = TowersOfHanoiSolver(N_RINGS, pygame, window, height=HEIGHT, action_delay=ACTION_DELAY)
 
     # Start solving the tower
     solver()

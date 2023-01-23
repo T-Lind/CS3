@@ -41,7 +41,7 @@ class Ring:
                       self.window_size - beneath * self.height - self.height, self.size_in_pixels, self.height])
 
 
-class TowersOfHanoi:
+class TowersOfHanoiSolver:
     """
     A graphical object representing the TowersOfHanoi game.
     """

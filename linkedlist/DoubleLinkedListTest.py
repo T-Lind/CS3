@@ -1,7 +1,7 @@
-from DoubleLinkedList import DoubleLinkedList
+from DoublyLinkedList import DoublyLinkedList
 from time import time
 
-my_list = DoubleLinkedList()
+my_list = DoublyLinkedList()
 
 for i in range(1000000):
     my_list.push(i)
