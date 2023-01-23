@@ -5,7 +5,14 @@ from pygame.locals import *
 
 
 class ArkanoidEngine:
+    """
+    Class to run the Arkanoid game
+    """
     def __init__(self, size=640):
+        """
+        Create the arkanoid game
+        :param size: window size in pixels
+        """
         pygame.init()
         pygame.display.set_caption("Arkanoid")
 
@@ -38,7 +45,10 @@ class ArkanoidEngine:
 
         self.create_blocks()
 
-    def move_player(self):
+    def move_player(self) -> None:
+        """
+        Move the player's actor
+        """
         key = pygame.key.get_pressed()
         if key[pygame.K_LEFT]:
             if self.player_rect.x > 1 and self.last_moved == 0:
@@ -48,7 +58,11 @@ class ArkanoidEngine:
                 self.player_rect.move_ip(1, 0)
         pygame.draw.rect(self.screen, self.gray, self.player_rect)
 
-    def move_ball(self):
+    def move_ball(self) -> None:
+        """
+        Update the ball's position
+        :return:
+        """
         if self.last_moved == 0:
             self.ball.move_ip(self.ball_speed)
             if self.ball.left < 0 or self.ball.right > self.size[0]:
@@ -68,7 +82,10 @@ class ArkanoidEngine:
         pygame.draw.rect(self.screen, self.white, self.ball)
 
     @staticmethod
-    def end_catch():
+    def end_catch() -> None:
+        """
+        Update ending conditions
+        """
         pygame.display.update()
         while True:
             for event in pygame.event.get():
@@ -76,7 +93,10 @@ class ArkanoidEngine:
                     pygame.quit()
                     sys.exit()
 
-    def check_loss(self):
+    def check_loss(self) -> None:
+        """
+        Determine if the game is lost or not
+        """
         if self.ball.bottom > self.size[1] - 10:
             self.ball_speed = [0, 0]
             loss_text = self.font.render('You Lost!', True, self.red, self.black)
@@ -85,7 +105,10 @@ class ArkanoidEngine:
             self.screen.blit(loss_text, textRect)
             self.end_catch()
 
-    def win(self):
+    def win(self) -> None:
+        """
+        Determine if the win condition has been met
+        """
         self.ball_speed = [0, 0]
         loss_text = self.font.render('You Win!', True, self.red, self.black)
         textRect = loss_text.get_rect()
@@ -93,7 +116,10 @@ class ArkanoidEngine:
         self.screen.blit(loss_text, textRect)
         self.end_catch()
 
-    def create_blocks(self):
+    def create_blocks(self) -> None:
+        """
+        Draw the blocks on the screen
+        """
         for r in range(10, self.size[1] // 4 + 10, self.size[1] // 4 // 2):
             color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
             for c in range(0, self.size[0], self.size[0] // 10):
@@ -101,7 +127,10 @@ class ArkanoidEngine:
                 self.blocks.append((block, color))
                 pygame.draw.rect(self.screen, color, block)
 
-    def update_blocks(self):
+    def update_blocks(self) -> None:
+        """
+        Update the displayed blocks on the screen
+        """
         for i in itertools.count(0):
             if len(self.blocks) == 0:
                 self.win()
