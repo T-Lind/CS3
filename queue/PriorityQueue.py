@@ -1,33 +1,27 @@
 class PriorityQueue(object):
+    """
+    Data structure for a priority queue. Built on a list data structure
+    """
+
     def __init__(self):
         self.queue = []
 
-    def is_empty(self):
-        return self.size() == 0
+    def is_empty(self) -> bool:
+        return len(self) == 0
 
-    def add(self, data):
+    def add(self, data) -> None:
         self.queue.append(data)
         self.queue = sorted(self.queue)
 
-    def remove(self):
-        if self.is_empty(): return
+    def remove(self) -> Any:
+        if self.is_empty():
+            return
         return self.queue.pop()
 
-    def peek(self):
-        if self.is_empty(): return
+    def peek(self) -> Any:
+        if self.is_empty():
+            return
         return self.queue[-1]
 
-    def size(self):
+    def __len__(self):
         return len(self.queue)
-
-
-
-if __name__ == '__main__':
-    myQueue = PriorityQueue()
-    myQueue.add(12)
-    myQueue.add(1)
-    myQueue.add(14)
-    myQueue.add(7)
-    print(myQueue)
-    while not myQueue.is_empty():
-        print(myQueue.remove())

@@ -1,6 +1,10 @@
-from queue import PriorityQueue
-PriorityQueue = PriorityQueue.PriorityQueue
+from queue.PriorityQueue import PriorityQueue
+
+
 class Dog:
+    """
+    Example class to show off the Priority Queue
+    """
     def __init__(self, name, age):
         self.name = name
         self.age = age
@@ -14,6 +18,7 @@ class Dog:
         if other.age > self.age:
             return True
         return False
+
 
 myQueue = PriorityQueue()
 myQueue.add(Dog("Fluffy", 10))

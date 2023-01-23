@@ -1,1 +1,2 @@
-from queue import PriorityQueue, Queue, TestPriorityQueue
+from queue.Queue import Queue
+from queue.PriorityQueue import PriorityQueue
