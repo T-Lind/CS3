@@ -1,3 +1,6 @@
+from typing import Any
+
+
 class PriorityQueue(object):
     """
     Data structure for a priority queue. Built on a list data structure
