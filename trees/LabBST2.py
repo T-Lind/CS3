@@ -1,10 +1,10 @@
 from trees.BST import BinarySearchTree
 
 tree = BinarySearchTree()
-tree.build_tree(15)  # Add 15 nodes
+tree.from_array([10, 5, 99, 40, 67, 19, 1, 54, 15, 6])
 tree.insert(50)
 tree.insert(51)
-tree.build_tree(5)  # Add another 5 nodes
+tree.build_tree(5)  # Add another 5 random nodes
 
 print("In order:")
 tree.print_in_order()
