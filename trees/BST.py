@@ -7,6 +7,9 @@ class Node:
         self.right = None
         self.data = data
 
+    def __str__(self):
+        return f"Data: {self.data}; (Left: {self.left}; Right: {self.right})"
+
 
 class BinarySearchTree:
     def __init__(self):
@@ -16,9 +19,9 @@ class BinarySearchTree:
         for item in array:
             self.insert(item)
 
-    def build_tree(self, n_items, randomization=(0, 100, 1)):
+    def build_tree(self, n_items, generate_rand=lambda: random.randint(0, 100)):
         for _ in range(n_items):
-            self.insert(random.uniform(*randomization))
+            self.insert(generate_rand())
 
     def insert(self, data):
         if self.root is None:
@@ -149,6 +152,80 @@ class BinarySearchTree:
         elif node.left is not None and node.right is not None:
             return self.__is_full(node.left) and self.__is_full(node.right)
         return False
+
+    def find(self, data):
+        current_node = self.root
+        while current_node is not None:
+            if data == current_node.data:
+                return current_node
+            elif data < current_node.data:
+                current_node = current_node.left
+            else:
+                current_node = current_node.right
+        return None
+
+    def delete_min(self):
+        if self.root is None:
+            return None
+        elif self.root.left is None:
+            deleted_node = self.root
+            self.root = self.root.right
+            return deleted_node
+        else:
+            parent_node = self.root
+            current_node = self.root.left
+            while current_node.left is not None:
+                parent_node = current_node
+                current_node = current_node.left
+            deleted_node = current_node
+            parent_node.left = current_node.right
+            return deleted_node
+
+    def delete_max(self):
+        if self.root is None:
+            return None
+        elif self.root.right is None:
+            deleted_node = self.root
+            self.root = self.root.left
+            return deleted_node
+        else:
+            parent_node = self.root
+            current_node = self.root.right
+            while current_node.right is not None:
+                parent_node = current_node
+                current_node = current_node.right
+            deleted_node = current_node
+            parent_node.right = current_node.left
+            return deleted_node
+
+    def delete_node(self, data):
+        self.root = self._delete_node(data, self.root)
+
+    def _get_max(self, node):
+        if node.right is None:
+            return node
+        else:
+            return self._get_max(node.right)
+
+    def _delete_node(self, data, node):
+        if node is None:
+            return None
+        elif data < node.data:
+            node.left = self._delete_node(data, node.left)
+        elif data > node.data:
+            node.right = self._delete_node(data, node.right)
+        else:
+            if node.left is None and node.right is None:
+                node = None
+            elif node.left is None:
+                node = node.right
+            elif node.right is None:
+                node = node.left
+            else:
+                temp = self._get_max(node.left)
+                node.data = temp.data
+                node.left = self._delete_node(temp.data, node.left)
+        return node
 
     def __str(self, node):
         ret_str = ""

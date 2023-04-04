@@ -1,24 +1,22 @@
 from trees.BST import BinarySearchTree
 
 tree = BinarySearchTree()
-tree.build_tree(16)
+tree.build_tree(15)  # Add 15 nodes
+tree.insert(50)
+tree.insert(51)
+tree.build_tree(5)  # Add another 5 nodes
 
 print("In order:")
 tree.print_in_order()
 
-print("Pre order:")
-tree.print_pre_order()
+print(f"Found node: {tree.find(50)}")
+tree.delete_max()
+tree.delete_min()
 
-print("Post order:")
-tree.print_post_order()
+print("Deleted min and max:")
+tree.print_in_order()
+tree.delete_node(51)
+tree.delete_node(50)
 
-print("Reverse order:")
-tree.print_in_reverse()
-
-print(f"Height: {tree.get_height()}")
-print(f"Width: {tree.get_width()}")
-print(f"# of leaves: {tree.get_num_leaves()}")
-print(f"# of nodes: {tree.get_num_nodes()}")
-print(f"# of levels: {tree.get_num_levels()}")
-print(f"Tree as string: {tree}")
-print(f"Tree is full: {tree.is_full()}")
+print(f"Deleted 50 and 51:")
+tree.print_in_order()
